@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>files/styles/style-default.css</file>
+        <file>files/images/validate.png</file>
+        <file>files/images/connection.png</file>
+    </qresource>
+</RCC>

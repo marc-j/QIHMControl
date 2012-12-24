@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IHMControl</class>
+ <widget class="QMainWindow" name="IHMControl">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1056</width>
+    <height>685</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>IHMControl</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1056</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuIHMControl_V0_1_By_Alienx">
+    <property name="title">
+     <string>&amp;Fichier</string>
+    </property>
+    <addaction name="actionFullScreen"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_Serial">
+    <property name="title">
+     <string>&amp;Serial</string>
+    </property>
+    <addaction name="actionSerial"/>
+   </widget>
+   <addaction name="menuIHMControl_V0_1_By_Alienx"/>
+   <addaction name="menu_Serial"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionFullScreen">
+   <property name="text">
+    <string>&amp;Full Screen</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>&amp;Quitter</string>
+   </property>
+  </action>
+  <action name="actionSerial">
+   <property name="icon">
+    <iconset resource="../files.qrc">
+     <normaloff>:/files/images/connection.png</normaloff>:/files/images/connection.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Configuration</string>
+   </property>
+   <property name="toolTip">
+    <string>Configure Serial Link</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
+   </property>
+  </action>
+  <action name="actionOups">
+   <property name="text">
+    <string>Oups</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../files.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>IHMControl</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>527</x>
+     <y>342</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFullScreen</sender>
+   <signal>triggered()</signal>
+   <receiver>IHMControl</receiver>
+   <slot>showFullScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>527</x>
+     <y>342</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
