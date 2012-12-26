@@ -16,45 +16,50 @@ CONFIG += qt3d
 
 include(libs/3rdparty/qextserialport/src/qextserialport.pri)
 
-SOURCES += main.cpp\
-    IHMCore.cpp \
-    ui/JoyStickStatus.cpp \
-    ui/SystemStatus.cpp \
-    ui/IHMControl.cpp \
-    ui/MotorStatus.cpp \
-    ui/PIDBox.cpp \
-    ui/GaugesView.cpp \
-    UAV.cpp \
-    protocol/Protocol.cpp \
-    protocol/message/MessageInterface.cpp \
-    ui/SerialConfiguration.cpp \
-    ui/Led.cpp \
-    ui/Cube3D.cpp \
-    ui/UAVView.cpp
+INCLUDEPATH += src \
+    src/ui \
+    src/protocol \
+    src/protocol/message
+
+SOURCES += src/main.cpp\
+    src/IHMCore.cpp \
+    src/ui/JoyStickStatus.cpp \
+    src/ui/SystemStatus.cpp \
+    src/ui/IHMControl.cpp \
+    src/ui/MotorStatus.cpp \
+    src/ui/PIDBox.cpp \
+    src/ui/GaugesView.cpp \
+    src/UAV.cpp \
+    src/protocol/Protocol.cpp \
+    src/protocol/message/MessageInterface.cpp \
+    src/ui/SerialConfiguration.cpp \
+    src/ui/Led.cpp \
+    src/ui/Cube3D.cpp \
+    src/ui/UAVView.cpp
 
 HEADERS  += \
-    IHMCore.h \
-    ui/JoyStickStatus.h \
-    ui/SystemStatus.h \
-    ui/IHMControl.h \
-    ui/MotorStatus.h \
-    ui/PIDBox.h \
-    ui/GaugesView.h \
-    UAV.h \
-    protocol/Protocol.h \
-    protocol/message/MessageInterface.h \
-    ui/SerialConfiguration.h \
-    ui/Led.h \
-    ui/Cube3D.h \
-    ui/UAVView.h
+    src/IHMCore.h \
+    src/ui/JoyStickStatus.h \
+    src/ui/SystemStatus.h \
+    src/ui/IHMControl.h \
+    src/ui/MotorStatus.h \
+    src/ui/PIDBox.h \
+    src/ui/GaugesView.h \
+    src/UAV.h \
+    src/protocol/Protocol.h \
+    src/protocol/message/MessageInterface.h \
+    src/ui/SerialConfiguration.h \
+    src/ui/Led.h \
+    src/ui/Cube3D.h \
+    src/ui/UAVView.h
 
 FORMS    += \
-    ui/JoyStickStatus.ui \
-    ui/SystemStatus.ui \
-    ui/IHMControl.ui \
-    ui/MotorStatus.ui \
-    ui/PIDBox.ui \
-    ui/SerialConfiguration.ui
+    src/ui/JoyStickStatus.ui \
+    src/ui/SystemStatus.ui \
+    src/ui/IHMControl.ui \
+    src/ui/MotorStatus.ui \
+    src/ui/PIDBox.ui \
+    src/ui/SerialConfiguration.ui
 
 RESOURCES += \
     files.qrc
