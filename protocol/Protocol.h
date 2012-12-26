@@ -32,6 +32,7 @@ signals:
     void serialOpened();
     void serialClosed();
     void serialError(QString,QString);
+    void serialMessage(QString);
 
 protected:
     explicit Protocol(QObject *parent = 0);
@@ -47,6 +48,12 @@ public slots:
     void closeSerial();
     void openSerial();
     void portSettingsChange(QString portName, BaudRateType baud, DataBitsType bit,  StopBitsType stop, ParityType parity);
+    void serialLinkUp() {
+        emit serialMessage("Serial link connected.");
+    }
+    void serialLinkDown() {
+        emit serialMessage("Serial link disconnected.");
+    }
 };
 
 #endif // PROTOCOL_H

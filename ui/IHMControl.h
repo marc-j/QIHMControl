@@ -44,6 +44,9 @@ public slots:
     void closeEvent(QCloseEvent* event);
     void showCriticalMessage(const QString& title, const QString& message);
     void showInfoMessage(const QString& title, const QString& message);
+    void showStatusMessage(const QString& status, int timeout);
+    void showStatusMessage5s(const QString& status);
+    void showStatusMessage(const QString& status);
 
 protected:
     IHMControl(QWidget *parent = 0);

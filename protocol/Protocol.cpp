@@ -18,6 +18,9 @@ Protocol::Protocol(QObject *parent) :
 {
 
     readSettings();
+    connect(this,SIGNAL(serialOpened()), this, SLOT(serialLinkUp()));
+    connect(this, SIGNAL(serialClosed()), this, SLOT(serialLinkUp()));
+
     serial = new QextSerialPort(portName, portSettings);
     emit serialClosed();
 

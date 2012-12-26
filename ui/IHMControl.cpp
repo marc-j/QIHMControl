@@ -40,6 +40,7 @@ IHMControl::IHMControl(QWidget *parent) :
     uav = UAV::instance();
     protocol = Protocol::instance();
     connect(protocol, SIGNAL(serialError(QString,QString)), this, SLOT(showCriticalMessage(QString,QString)));
+    connect(protocol,SIGNAL(serialMessage(QString)), this, SLOT(showStatusMessage5s(QString)));
 
     // Set dock options
     setDockOptions(AnimatedDocks | AllowTabbedDocks | AllowNestedDocks);
@@ -105,6 +106,7 @@ IHMControl::IHMControl(QWidget *parent) :
 
     connect(ui->actionSerial, SIGNAL(triggered()), this, SLOT(showSerialConfiguration()));
     show();
+    this->statusBar()->showMessage("kikoolol");
 }
 
 IHMControl::~IHMControl()
@@ -250,5 +252,20 @@ void IHMControl::showInfoMessage(const QString& title, const QString& message)
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.exec();
+}
+
+void IHMControl::showStatusMessage(const QString& status, int timeout)
+{
+    statusBar()->showMessage(status, timeout);
+}
+
+void IHMControl::showStatusMessage(const QString& status)
+{
+    statusBar()->showMessage(status, 0);
+}
+
+void IHMControl::showStatusMessage5s(const QString& status)
+{
+    statusBar()->showMessage(status, 5000);
 }
 
