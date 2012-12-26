@@ -25,6 +25,16 @@ QGroupBox {
     font-weight: bold;
 }
 
+QToolBar {
+    padding: 5px;
+    background: #222;
+}
+QToolBar QWidget {
+    font-size: 12px;
+    margin-right: 5px;
+    background: #222;
+}
+
 QComboBox,
 QSpinBox,
 QDoubleSpinBox {

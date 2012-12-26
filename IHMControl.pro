@@ -5,13 +5,14 @@
 #-------------------------------------------------
 
 QT       += core gui \
-            webkit \
-            opengl
+            webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = IHMControl
 TEMPLATE = app
+
+CONFIG += qt3d
 
 include(libs/3rdparty/qextserialport/src/qextserialport.pri)
 
@@ -26,7 +27,10 @@ SOURCES += main.cpp\
     UAV.cpp \
     protocol/Protocol.cpp \
     protocol/message/MessageInterface.cpp \
-    ui/SerialConfiguration.cpp
+    ui/SerialConfiguration.cpp \
+    ui/Led.cpp \
+    ui/Cube3D.cpp \
+    ui/UAVView.cpp
 
 HEADERS  += \
     IHMCore.h \
@@ -39,7 +43,10 @@ HEADERS  += \
     UAV.h \
     protocol/Protocol.h \
     protocol/message/MessageInterface.h \
-    ui/SerialConfiguration.h
+    ui/SerialConfiguration.h \
+    ui/Led.h \
+    ui/Cube3D.h \
+    ui/UAVView.h
 
 FORMS    += \
     ui/JoyStickStatus.ui \

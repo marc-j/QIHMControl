@@ -23,17 +23,30 @@ public:
        PROTOCOL_MSG_PID,
        PROTOCOL_MSG_MOTOR
     };
+
+    PortSettings getPortSettings();
+    QString getPortName();
     
 signals:
     void receiveMessage(MessageInterface msg);
+    void serialOpened();
+    void serialClosed();
+    void serialError(QString,QString);
 
 protected:
     explicit Protocol(QObject *parent = 0);
 
     QextSerialPort* serial;
+    PortSettings portSettings;
+    QString portName;
+
+    void saveSettings();
+    void readSettings();
 
 public slots:
-    
+    void closeSerial();
+    void openSerial();
+    void portSettingsChange(QString portName, BaudRateType baud, DataBitsType bit,  StopBitsType stop, ParityType parity);
 };
 
 #endif // PROTOCOL_H

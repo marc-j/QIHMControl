@@ -12,6 +12,12 @@
 #include "ui/MotorStatus.h"
 #include "ui/PIDBox.h"
 #include "ui/GaugesView.h"
+#include "ui/Led.h"
+#include "protocol/Protocol.h"
+#include "ui/Cube3D.h"
+#include "ui/UAVView.h"
+
+#include "UAV.h"
 
 namespace Ui {
 class IHMControl;
@@ -36,9 +42,14 @@ private:
 public slots:
     void showSerialConfiguration();
     void closeEvent(QCloseEvent* event);
+    void showCriticalMessage(const QString& title, const QString& message);
+    void showInfoMessage(const QString& title, const QString& message);
 
 protected:
     IHMControl(QWidget *parent = 0);
+
+    UAV* uav;
+    Protocol* protocol;
 
     QSettings settings;
     QStackedWidget *centerStack;
@@ -50,8 +61,16 @@ protected:
 
     QString styleFileName;
 
+    Led* serialStatus;
+    Led* joyStickStatus;
+    Led* armedStatus;
+
+    Cube3D* cube3d;
+    UAVView* uavView;
+
     void loadSettings();
     void saveSettings();
+    void generateToolBar();
 };
 
 #endif // IHMCONTROL_H
