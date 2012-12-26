@@ -61,8 +61,8 @@ IHMControl::IHMControl(QWidget *parent) :
     gMapURL = "http://www.google.fr";
     webView->setUrl(QUrl(gMapURL));*/
 
-    uavView = new UAVView(this);
-    setCentralWidget(uavView);
+   /* uavView = new UAVView(this);
+    setCentralWidget(uavView);*/
 
     joystickStatus = new JoyStickStatus(this);
     addDockWidget(Qt::LeftDockWidgetArea, joystickStatus);
@@ -79,6 +79,12 @@ IHMControl::IHMControl(QWidget *parent) :
     cube3dDock->setWidget(cube3d);
     cube3dDock->setObjectName("IHMCONTROL_CUBE3D_DOCK");
     addDockWidget(Qt::RightDockWidgetArea, cube3dDock);
+
+    QDockWidget* uavViewDock = new QDockWidget(tr("UAV View"),this);
+    uavView = new UAVView(this);
+    uavViewDock->setWidget(uavView);
+    uavViewDock->setObjectName("IHMCONTROL_UAVVIEW_DOCK");
+    addDockWidget(Qt::RightDockWidgetArea, uavViewDock);
 
     pidBox = new PIDBox(this);
     addDockWidget(Qt::RightDockWidgetArea, pidBox);
