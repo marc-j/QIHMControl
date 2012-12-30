@@ -22,4 +22,5 @@ IHMCore::~IHMCore()
     delete UAV::instance();
     delete Protocol::instance();
     delete IHMControl::instance();
+    delete Joystick::instance();
 }

@@ -12,7 +12,8 @@
 
 #include "IHMControl.h"
 #include "ui_IHMControl.h"
-#include "ui/SerialConfiguration.h";
+#include "ui/SerialConfiguration.h"
+#include "ui/JoystickConfiguration.h"
 #include "ui/Cube3D.h"
 #include "ui/UAVView.h"
 
@@ -39,8 +40,11 @@ IHMControl::IHMControl(QWidget *parent) :
 
     uav = UAV::instance();
     protocol = Protocol::instance();
+    joystick = Joystick::instance();
+
     connect(protocol, SIGNAL(serialError(QString,QString)), this, SLOT(showCriticalMessage(QString,QString)));
     connect(protocol,SIGNAL(serialMessage(QString)), this, SLOT(showStatusMessage5s(QString)));
+
 
     // Set dock options
     setDockOptions(AnimatedDocks | AllowTabbedDocks | AllowNestedDocks);
@@ -61,8 +65,11 @@ IHMControl::IHMControl(QWidget *parent) :
     gMapURL = "http://www.google.fr";
     webView->setUrl(QUrl(gMapURL));*/
 
-   /* uavView = new UAVView(this);
+    /*uavView = new UAVView(this);
     setCentralWidget(uavView);*/
+
+    console = new Console(this);
+    setCentralWidget(console);
 
     joystickStatus = new JoyStickStatus(this);
     addDockWidget(Qt::LeftDockWidgetArea, joystickStatus);
@@ -80,11 +87,11 @@ IHMControl::IHMControl(QWidget *parent) :
     cube3dDock->setObjectName("IHMCONTROL_CUBE3D_DOCK");
     addDockWidget(Qt::RightDockWidgetArea, cube3dDock);
 
-    QDockWidget* uavViewDock = new QDockWidget(tr("UAV View"),this);
+   /* QDockWidget* uavViewDock = new QDockWidget(tr("UAV View"),this);
     uavView = new UAVView(this);
     uavViewDock->setWidget(uavView);
     uavViewDock->setObjectName("IHMCONTROL_UAVVIEW_DOCK");
-    addDockWidget(Qt::RightDockWidgetArea, uavViewDock);
+    addDockWidget(Qt::RightDockWidgetArea, uavViewDock);*/
 
     pidBox = new PIDBox(this);
     addDockWidget(Qt::RightDockWidgetArea, pidBox);
@@ -111,6 +118,11 @@ IHMControl::IHMControl(QWidget *parent) :
     }
 
     connect(ui->actionSerial, SIGNAL(triggered()), this, SLOT(showSerialConfiguration()));
+    connect(ui->actionJoystick, SIGNAL(triggered()), this, SLOT(showJoystickConfiguration()));
+
+    joystick->startPolling();
+    protocol->openSerial();
+
     show();
     this->statusBar()->showMessage("kikoolol");
 }
@@ -191,6 +203,7 @@ void IHMControl::generateToolBar()
 
     joyStickStatus = new Led(this);
     ui->toolBar->addWidget(joyStickStatus);
+    connect(joystick, SIGNAL(joystickStarted(bool)), joyStickStatus, SLOT(turn(bool)));
 
     ui->toolBar->addSeparator();
 
@@ -208,6 +221,12 @@ void IHMControl::showSerialConfiguration()
 {
     SerialConfiguration* config = new SerialConfiguration();
     config->show();
+}
+
+void IHMControl::showJoystickConfiguration()
+{
+    JoystickConfiguration* joystick = new JoystickConfiguration();
+    joystick->show();
 }
 
 QString IHMControl::getWindowStateKey()

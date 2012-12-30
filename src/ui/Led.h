@@ -32,6 +32,7 @@ public slots:
        void toggle();
        void turnOff();
        void turnOn();
+       void turn(bool);
 };
 
 #endif // LED_H

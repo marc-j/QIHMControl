@@ -13,6 +13,7 @@ TARGET = IHMControl
 TEMPLATE = app
 
 CONFIG += qt3d
+LIBS += -lSDL
 
 include(libs/3rdparty/qextserialport/src/qextserialport.pri)
 
@@ -31,11 +32,14 @@ SOURCES += src/main.cpp\
     src/ui/GaugesView.cpp \
     src/UAV.cpp \
     src/protocol/Protocol.cpp \
-    src/protocol/message/MessageInterface.cpp \
     src/ui/SerialConfiguration.cpp \
     src/ui/Led.cpp \
     src/ui/Cube3D.cpp \
-    src/ui/UAVView.cpp
+    src/ui/UAVView.cpp \
+    src/ui/JoystickConfiguration.cpp \
+    src/input/Joystick.cpp \
+    src/ui/JoystickCalibration.cpp \
+    src/ui/Console.cpp
 
 HEADERS  += \
     src/IHMCore.h \
@@ -47,11 +51,15 @@ HEADERS  += \
     src/ui/GaugesView.h \
     src/UAV.h \
     src/protocol/Protocol.h \
-    src/protocol/message/MessageInterface.h \
     src/ui/SerialConfiguration.h \
     src/ui/Led.h \
     src/ui/Cube3D.h \
-    src/ui/UAVView.h
+    src/ui/UAVView.h \
+    src/ui/JoystickConfiguration.h \
+    src/input/Joystick.h \
+    src/ui/JoystickCalibration.h \
+    src/ui/Console.h \
+    src/protocol/message/Messages.h
 
 FORMS    += \
     src/ui/JoyStickStatus.ui \
@@ -59,7 +67,9 @@ FORMS    += \
     src/ui/IHMControl.ui \
     src/ui/MotorStatus.ui \
     src/ui/PIDBox.ui \
-    src/ui/SerialConfiguration.ui
+    src/ui/SerialConfiguration.ui \
+    src/ui/JoystickConfiguration.ui \
+    src/ui/Console.ui
 
 RESOURCES += \
     files.qrc

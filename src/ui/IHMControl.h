@@ -13,9 +13,12 @@
 #include "ui/PIDBox.h"
 #include "ui/GaugesView.h"
 #include "ui/Led.h"
-#include "protocol/Protocol.h"
 #include "ui/Cube3D.h"
 #include "ui/UAVView.h"
+#include "ui/Console.h"
+
+#include "protocol/Protocol.h"
+#include "input/Joystick.h"
 
 #include "UAV.h"
 
@@ -41,6 +44,7 @@ private:
 
 public slots:
     void showSerialConfiguration();
+    void showJoystickConfiguration();
     void closeEvent(QCloseEvent* event);
     void showCriticalMessage(const QString& title, const QString& message);
     void showInfoMessage(const QString& title, const QString& message);
@@ -53,6 +57,7 @@ protected:
 
     UAV* uav;
     Protocol* protocol;
+    Joystick* joystick;
 
     QSettings settings;
     QStackedWidget *centerStack;
@@ -70,6 +75,7 @@ protected:
 
     Cube3D* cube3d;
     UAVView* uavView;
+    Console* console;
 
     void loadSettings();
     void saveSettings();

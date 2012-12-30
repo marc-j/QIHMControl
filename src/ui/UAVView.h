@@ -5,6 +5,8 @@
 #include <qglcamera.h>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QShowEvent>
+#include <QHideEvent>
 
 class QGLAbstractScene;
 class QGLSceneNode;
@@ -33,6 +35,9 @@ protected:
     void initializeGL();
     void paintEvent(QPaintEvent *event);
     void resizeGL(int w, int h);
+
+    void showEvent(QShowEvent* event);
+    void hideEvent(QHideEvent* event);
 
 private:
     QGLAbstractScene *m_scene;

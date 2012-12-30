@@ -53,6 +53,12 @@ void Led::turnOff()
     update();
 }
 
+void Led::turn(bool on)
+{
+    params.isOn = on;
+    update();
+}
+
 void Led::paintEvent(QPaintEvent * /*event*/)
 {
     int width = ledWidth();

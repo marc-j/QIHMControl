@@ -38,9 +38,11 @@
    </widget>
    <widget class="QMenu" name="menu_Serial">
     <property name="title">
-     <string>&amp;Serial</string>
+     <string>&amp;Options</string>
     </property>
     <addaction name="actionSerial"/>
+    <addaction name="separator"/>
+    <addaction name="actionJoystick"/>
    </widget>
    <addaction name="menuIHMControl_V0_1_By_Alienx"/>
    <addaction name="menu_Serial"/>
@@ -78,11 +80,11 @@
   </action>
   <action name="actionSerial">
    <property name="icon">
-    <iconset resource="../files.qrc">
+    <iconset resource="../../files.qrc">
      <normaloff>:/files/images/connection.png</normaloff>:/files/images/connection.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Configuration</string>
+    <string>&amp;Serial Configuration</string>
    </property>
    <property name="toolTip">
     <string>Configure Serial Link</string>
@@ -98,10 +100,19 @@
     <string>Oups</string>
    </property>
   </action>
+  <action name="actionJoystick">
+   <property name="icon">
+    <iconset resource="../../files.qrc">
+     <normaloff>:/files/images/joystick.png</normaloff>:/files/images/joystick.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Joystick</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../files.qrc"/>
+  <include location="../../files.qrc"/>
  </resources>
  <connections>
   <connection>

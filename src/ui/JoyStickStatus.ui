@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>220</width>
+    <width>234</width>
     <height>114</height>
    </rect>
   </property>
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>0</height>
+    <width>234</width>
+    <height>101</height>
    </size>
   </property>
   <property name="features">
@@ -36,7 +36,7 @@
     <item row="1" column="1">
      <widget class="QLCDNumber" name="yAxis">
       <property name="numDigits">
-       <number>4</number>
+       <number>5</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
@@ -62,7 +62,7 @@
     <item row="0" column="3">
      <widget class="QLCDNumber" name="zAxis">
       <property name="numDigits">
-       <number>4</number>
+       <number>5</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
@@ -82,7 +82,7 @@
     <item row="0" column="1">
      <widget class="QLCDNumber" name="xAxis">
       <property name="numDigits">
-       <number>4</number>
+       <number>5</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
@@ -95,7 +95,7 @@
     <item row="1" column="3">
      <widget class="QLCDNumber" name="throttleAxis">
       <property name="numDigits">
-       <number>4</number>
+       <number>5</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>

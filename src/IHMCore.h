@@ -5,6 +5,7 @@
 #include "ui/IHMControl.h"
 #include "UAV.h"
 #include "protocol/Protocol.h"
+#include "input/Joystick.h"
 
 class IHMCore : public QApplication
 {

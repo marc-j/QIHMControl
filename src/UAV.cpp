@@ -1,6 +1,6 @@
 #include "UAV.h"
 
-#include "protocol/message/MessageInterface.h"
+#include "protocol/message/Messages.h"
 
 UAV* UAV::instance()
 {
@@ -25,7 +25,7 @@ UAV::UAV(QObject *parent) :
     readSettings();
 
     protocol = Protocol::instance();
-    connect(protocol, SIGNAL(receiveMessage(MessageInterface)), this, SLOT(receiveMessage(MessageInterface)));
+    connect(protocol, SIGNAL(receiveMessage(protocol_message_t)), this, SLOT(receiveMessage(protocol_message_t)));
 
     //emit disarmed();
 }
@@ -56,9 +56,23 @@ void UAV::updateYawPID(float kP, float kI, float kD)
     yawPID.kD = kD;
 }
 
-void UAV::receiveMessage(MessageInterface msg)
+void UAV::receiveMessage(protocol_message_t msg)
 {
+    switch(msg.cmd){
+        case PROTOCOL_MSG_SYSTEM:
+            protocol_message_system_t system;
+            protocol_message_system_decode(&msg,&system);
+            cpuLoad = system.cpuLoad/1000.0f;
+            emit cpuLoadChange(cpuLoad);
 
+            mainLoop = system.mainLoopTime/1000.0f;
+            emit mainLoopChange(mainLoop);
+
+            batteryVoltage = system.batteryVoltage/1000.0f;
+            emit batteryVoltageChange(batteryVoltage);
+
+            break;
+    }
 }
 
 

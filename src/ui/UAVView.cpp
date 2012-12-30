@@ -29,13 +29,29 @@ UAVView::UAVView(QWidget *parent) :
 
     refreshTimer->setInterval(40);
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(paintUAV()));
-    refreshTimer->start();
+
+    resize(this->width(), this->height());
+   // refreshTimer->start();
 
 }
 
 UAVView::~UAVView()
 {
+    refreshTimer->stop();
+    delete cube;
     //delete scene;
+}
+
+void UAVView::showEvent(QShowEvent* event)
+{
+    QGLWidget::showEvent(event);
+    refreshTimer->start(40);
+}
+
+void UAVView::hideEvent(QHideEvent* event)
+{
+    refreshTimer->stop();
+    QGLWidget::hideEvent(event);
 }
 
 void UAVView::initializeGL()
@@ -63,8 +79,8 @@ void UAVView::initializeGL()
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-   /* m_scene = QGLAbstractScene::loadScene(":/files/obj/drone.3ds");
-    m_rootNode = m_scene->mainNode();*/
+    m_scene = QGLAbstractScene::loadScene(":/files/obj/drone.3ds");
+    m_rootNode = m_scene->mainNode();
 
     QGLBuilder builder;
     builder << QGL::Faceted << QGLCube(2.0f);
@@ -82,14 +98,16 @@ void UAVView::paintEvent(QPaintEvent *event)
 
 void UAVView::paintUAV()
 {
-    qDebug() << "PAINT: " << this->width() << ", " << this->height();
+    //qDebug() << "PAINT: " << this->width() << ", " << this->height();
 
     QPainter p(this);
     p.beginNativePainting();
 
     QGLPainter painter;
-    painter.begin();
+    painter.begin(&p);
     painter.clearAttributes();
+    //painter.setEye(QGL::RightEye);
+    painter.setClearColor(Qt::black);
 
     makeCurrent();
     glMatrixMode(GL_MODELVIEW);
@@ -142,7 +160,7 @@ void UAVView::paintUAV()
     p.setRenderHint(QPainter::TextAntialiasing);
     p.setRenderHint(QPainter::HighQualityAntialiasing);
     p.setPen(Qt::white);
-    p.drawText(20,20,"KIKOO LOL");
+    p.drawText(20,20,"2D View");
     p.end();
 
    //refreshTimer->stop();
@@ -156,7 +174,7 @@ void UAVView::resizeGL(int w, int h)
 /*void UAVView::paintGL()
 {
 
-    /*QImage image(rect().size(), QImage::Format_ARGB32);
+    QImage image(rect().size(), QImage::Format_ARGB32);
     image.fill(0);
     QGLBuilder builder;
     builder.addPane(5.0f);

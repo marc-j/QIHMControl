@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <qextserialport.h>
+#include <QByteArray>
 
-#include "protocol/message/MessageInterface.h"
+#include "protocol/message/Messages.h"
 
 class Protocol : public QObject
 {
@@ -14,25 +15,27 @@ public:
     static Protocol* instance();
     ~Protocol();
 
-    enum CMD
-    {
-       PROTOCOL_NULL,
-       PROTOCOL_MSG_SENSOR,
-       PROTOCOL_MSG_SYSTEM,
-       PROCOCOL_MSG_COMMAND,
-       PROTOCOL_MSG_PID,
-       PROTOCOL_MSG_MOTOR
+    enum STEP {
+        STX1,
+        STX2,
+        CTX,
+        LTX,
+        DTX,
+        CRC
     };
 
     PortSettings getPortSettings();
     QString getPortName();
     
 signals:
-    void receiveMessage(MessageInterface msg);
+    void receiveMessage(protocol_message_t msg);
     void serialOpened();
     void serialClosed();
     void serialError(QString,QString);
     void serialMessage(QString);
+
+    void receiveByte(const unsigned char);
+    void datasReceive(QByteArray* buffer);
 
 protected:
     explicit Protocol(QObject *parent = 0);
@@ -40,6 +43,11 @@ protected:
     QextSerialPort* serial;
     PortSettings portSettings;
     QString portName;
+
+    unsigned char step;
+    unsigned char len;
+    QByteArray* buffer;
+    unsigned char crc;
 
     void saveSettings();
     void readSettings();
@@ -54,6 +62,11 @@ public slots:
     void serialLinkDown() {
         emit serialMessage("Serial link disconnected.");
     }
+
+
+private slots:
+    void onDataAvailable();
+    void onMessageReceive(QByteArray*);
 };
 
 #endif // PROTOCOL_H
