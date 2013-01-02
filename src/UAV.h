@@ -71,6 +71,13 @@ protected:
         float kD;
     };
 
+    double accX;
+    double accY;
+    double accZ;
+    double gyroX;
+    double gyroY;
+    double gyroZ;
+
     double pitch;
     double roll;
     double yaw;
@@ -109,6 +116,11 @@ signals:
     void cpuLoadChange(double);
     void mainLoopChange(double);
     void batteryVoltageChange(double);
+    void accChange(double x, double y, double z);
+    void gyroChange(double x, double y, double z);
+    void eulerChange(double roll, double pitch, double yaw);
+
+    void motorChange(int fl, int fr, int rl, int rr);
 
 public slots:
     void updateRollPID(float kP, float kI, float kD);

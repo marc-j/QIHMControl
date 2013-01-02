@@ -53,6 +53,8 @@ void Console::datasReceive(QByteArray *datas)
     }
 
     ui->consoleText->appendHtml( str );
+    ui->consoleText->setMaximumBlockCount(50);
+
 
 }
 

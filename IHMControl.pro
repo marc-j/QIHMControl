@@ -59,7 +59,10 @@ HEADERS  += \
     src/input/Joystick.h \
     src/ui/JoystickCalibration.h \
     src/ui/Console.h \
-    src/protocol/message/Messages.h
+    src/protocol/message/Messages.h \
+    src/protocol/message/MessageSystem.h \
+    src/protocol/message/MessageSensor.h \
+    src/protocol/message/MessageMotor.h
 
 FORMS    += \
     src/ui/JoyStickStatus.ui \

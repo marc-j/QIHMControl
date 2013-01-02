@@ -3,6 +3,8 @@
 
 #include "qglview.h"
 
+#include "UAV.h"
+
 class Cube3D : public QGLView
 {
     Q_OBJECT
@@ -17,10 +19,10 @@ signals:
     
 public slots:
 
-    void setPitch(float);
-    void setRoll(float);
-    void setYaw(float);
-    void setAxis(float, float, float);
+    void setPitch(double);
+    void setRoll(double);
+    void setYaw(double);
+    void setAxis(double, double, double);
 
 protected:
     void paintGL(QGLPainter *painter);
@@ -28,9 +30,11 @@ protected:
 private:
     QGLSceneNode *cube;
 
-    float pitch;
-    float roll;
-    float yaw;
+    double pitch;
+    double roll;
+    double yaw;
+
+    UAV* uav;
     
 };
 

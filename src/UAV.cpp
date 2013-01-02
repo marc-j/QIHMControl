@@ -72,6 +72,31 @@ void UAV::receiveMessage(protocol_message_t msg)
             emit batteryVoltageChange(batteryVoltage);
 
             break;
+        case PROTOCOL_MSG_SENSOR:
+            protocol_message_sensor_t sensor;
+            protocol_message_sensor_decode(&msg,&sensor);
+
+            accX = sensor.accX/10.0f;
+            accY = sensor.accY/10.0f;
+            accZ = sensor.accZ/10.0f;
+            gyroX = sensor.gyroX/10.0f;
+            gyroY = sensor.gyroY/10.0f;
+            gyroZ = sensor.gyroZ/10.0f;
+            roll = sensor.roll/10.0f;
+            pitch = sensor.pitch/10.0f;
+            yaw = sensor.yaw/10.0f;
+
+
+            emit accChange(accX, accY, accZ);
+            emit gyroChange(gyroX, gyroY, gyroZ);
+            emit eulerChange(roll, pitch, yaw);
+            break;
+        case PROTOCOL_MSG_MOTOR:
+            protocol_message_motor_t motor;
+            protocol_message_motor_decode(&msg,&motor);
+
+            emit motorChange(motor.motorFrontLeft, motor.motorFrontRight, motor.motorRearLeft, motor.motorRearRight);
+            break;
     }
 }
 

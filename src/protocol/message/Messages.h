@@ -4,6 +4,8 @@
 
 #include <QDebug>
 
+//#define PROCOTOL_BITSWAP 1
+
 enum PROTOCOL_CMD
 {
    PROTOCOL_UNKNOW,
@@ -17,22 +19,8 @@ enum PROTOCOL_CMD
 typedef struct __protocol_message {
     uint8_t cmd;
     uint8_t len;
-    uint16_t datas[255];
+    uint8_t datas[255];
 } protocol_message_t;
-
-#define PROTOCOL_MESSAGE_SENSOR_LEN 18
-typedef struct __protocol_message_sensor {
-    uint16_t accX;
-    uint16_t accY;
-    uint16_t accZ;
-    uint16_t gyroX;
-    uint16_t gyroY;
-    uint16_t gyroZ;
-    uint16_t roll;
-    uint16_t pitch;
-    uint16_t yaw;
-} protocol_message_sensor_t;
-
 
 #define _PROTOCOL_PAYLOAD(msg) ((const char *)(&((msg)->datas[0])))
 #define _PROTOCOL_RETURN_uint8_t(msg, offset) (uint8_t)_PROTOCOL_PAYLOAD(msg)[offset];
@@ -48,25 +36,8 @@ static inline uint16_t _PROTOCOL_RETURN_uint16_t(const protocol_message_t* msg, 
     return (msg->datas[offset] << 8) + (msg->datas[offset+1] & 0xFF);
 }
 
-inline static void protocol_message_sensor_decode(const protocol_message_t* msg, protocol_message_sensor_t* sensor)
-{
-    memcpy(sensor, _PROTOCOL_PAYLOAD(msg), PROTOCOL_MESSAGE_SENSOR_LEN);
-}
-
-#define PROTOCOL_MESSAGE_SYSTEM_LEN 8
-typedef struct __protocol_message_system {
-    uint16_t cpuLoad;
-    uint16_t flightMode;
-    uint16_t batteryVoltage;
-    uint16_t mainLoopTime;
-} protocol_message_system_t;
-
-inline static void protocol_message_system_decode(const protocol_message_t* msg, protocol_message_system_t* system)
-{
-    system->cpuLoad = _PROTOCOL_RETURN_uint16_t(msg,0);
-    system->flightMode = _PROTOCOL_RETURN_uint16_t(msg,2);
-    system->batteryVoltage = _PROTOCOL_RETURN_uint16_t(msg,4);
-    system->mainLoopTime = _PROTOCOL_RETURN_uint16_t(msg,6);
-}
+#include "MessageSystem.h"
+#include "MessageSensor.h"
+#include "MessageMotor.h"
 
 #endif // PROTOCOL_MESSAGE_H
