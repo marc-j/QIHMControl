@@ -20,7 +20,7 @@ include(libs/3rdparty/qextserialport/src/qextserialport.pri)
 INCLUDEPATH += src \
     src/ui \
     src/protocol \
-    src/protocol/message
+    libs/uavlink/include
 
 SOURCES += src/main.cpp\
     src/IHMCore.cpp \

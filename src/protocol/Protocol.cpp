@@ -142,7 +142,7 @@ void Protocol::onDataAvailable()
 
 void Protocol::onMessageReceive(QByteArray* datas)
 {
-    protocol_message_t msg;
+    uavlink_message_t msg;
     msg.cmd = (uint8_t) datas->at(0);
     msg.len = (uint8_t) datas->at(1);
     for( int i=2, j=0; i<datas->length(); i++, j++) {

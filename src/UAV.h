@@ -5,7 +5,6 @@
 #include <QDebug>
 
 #include "protocol/Protocol.h"
-#include "protocol/message/Messages.h"
 
 #define mapValue(value, src_min, src_max, dst_min, dst_max) ( (value-src_min)*(dst_max-dst_min)/(src_max-src_min)+dst_min )
 
@@ -141,7 +140,7 @@ public slots:
     void updatePitchPID(float kP, float kI, float kD);
     void updateYawPID(float kP, float kI, float kD);
 
-    void receiveMessage(protocol_message_t);
+    void receiveMessage(uavlink_message_t);
 
 };
 

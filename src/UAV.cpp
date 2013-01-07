@@ -1,7 +1,5 @@
 #include "UAV.h"
 
-#include "protocol/message/Messages.h"
-
 UAV* UAV::instance()
 {
     static UAV* _instance = 0;
@@ -25,7 +23,7 @@ UAV::UAV(QObject *parent) :
     readSettings();
 
     protocol = Protocol::instance();
-    connect(protocol, SIGNAL(receiveMessage(protocol_message_t)), this, SLOT(receiveMessage(protocol_message_t)));
+    connect(protocol, SIGNAL(receiveMessage(uavlink_message_t)), this, SLOT(receiveMessage(uavlink_message_t)));
 
     //emit disarmed();
 }
@@ -56,12 +54,12 @@ void UAV::updateYawPID(float kP, float kI, float kD)
     yawPID.kD = kD;
 }
 
-void UAV::receiveMessage(protocol_message_t msg)
+void UAV::receiveMessage(uavlink_message_t msg)
 {
     switch(msg.cmd){
-        case PROTOCOL_MSG_SYSTEM:
-            protocol_message_system_t system;
-            protocol_message_system_decode(&msg,&system);
+        case UAVLINK_MSG_SYSTEM:
+            uavlink_message_system_t system;
+            uavlink_message_system_decode(&msg,&system);
             cpuLoad = system.cpuLoad/1000.0f;
             emit cpuLoadChange(cpuLoad);
 
@@ -72,9 +70,9 @@ void UAV::receiveMessage(protocol_message_t msg)
             emit batteryVoltageChange(batteryVoltage);
 
             break;
-        case PROTOCOL_MSG_SENSOR:
-            protocol_message_sensor_t sensor;
-            protocol_message_sensor_decode(&msg,&sensor);
+        case UAVLINK_MSG_SENSOR:
+            uavlink_message_sensor_t sensor;
+            uavlink_message_sensor_decode(&msg,&sensor);
 
             accX = sensor.accX/10.0f;
             accY = sensor.accY/10.0f;
@@ -101,9 +99,9 @@ void UAV::receiveMessage(protocol_message_t msg)
             emit gyroChange(gyroX, gyroY, gyroZ);
             emit eulerChange(roll, pitch, yaw);
             break;
-        case PROTOCOL_MSG_MOTOR:
-            protocol_message_motor_t motor;
-            protocol_message_motor_decode(&msg,&motor);
+        case UAVLINK_MSG_MOTOR:
+            uavlink_message_motor_t motor;
+            uavlink_message_motor_decode(&msg,&motor);
 
             emit motorChange(motor.motorFrontLeft, motor.motorFrontRight, motor.motorRearLeft, motor.motorRearRight);
             break;

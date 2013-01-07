@@ -1,5 +1,5 @@
-[submodule "qextserialport"]
-	path = qextserialport
+[submodule "libs/3rdparty/qextserialport"]
+	path = libs/3rdparty/qextserialport
 	url = https://code.google.com/p/qextserialport/
 [submodule "libs/uavlink"]
 	path = libs/uavlink

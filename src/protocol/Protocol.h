@@ -5,7 +5,7 @@
 #include <qextserialport.h>
 #include <QByteArray>
 
-#include "protocol/message/Messages.h"
+#include "UAVLink.h"
 
 class Protocol : public QObject
 {
@@ -28,7 +28,7 @@ public:
     QString getPortName();
     
 signals:
-    void receiveMessage(protocol_message_t msg);
+    void receiveMessage(uavlink_message_t msg);
     void serialOpened();
     void serialClosed();
     void serialError(QString,QString);
