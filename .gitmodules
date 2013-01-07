@@ -1,3 +1,6 @@
 [submodule "qextserialport"]
 	path = qextserialport
 	url = https://code.google.com/p/qextserialport/
+[submodule "libs/uavlink"]
+	path = libs/uavlink
+	url = https://github.com/marc-j/UAVLink.git
