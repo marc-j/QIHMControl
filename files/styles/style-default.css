@@ -35,6 +35,14 @@ QToolBar QWidget {
     background: #222;
 }
 
+QToolBar QPushButton {
+	padding: 2px;
+}
+
+QToolBar QPushButton:default {
+     background-color: none;
+}
+
 QComboBox,
 QSpinBox,
 QDoubleSpinBox {

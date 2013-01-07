@@ -18,6 +18,9 @@ public:
     explicit Console(QWidget *parent = 0);
     ~Console();
 
+signals:
+    void visibilityChanged(bool);
+
 private slots:
     void serialOpened();
     void datasReceive(QByteArray* datas);

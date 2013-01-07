@@ -86,6 +86,16 @@ void UAV::receiveMessage(protocol_message_t msg)
             pitch = sensor.pitch/10.0f;
             yaw = sensor.yaw/10.0f;
 
+            emit updateValue(ACCX, accX);
+            emit updateValue(ACCY, accY);
+            emit updateValue(ACCZ, accZ);
+            emit updateValue(GYROX, gyroX);
+            emit updateValue(GYROY, gyroY);
+            emit updateValue(GYROZ, gyroZ);
+            emit updateValue(ROLL, roll);
+            emit updateValue(PITCH, pitch);
+            emit updateValue(YAW, yaw);
+
 
             emit accChange(accX, accY, accZ);
             emit gyroChange(gyroX, gyroY, gyroZ);

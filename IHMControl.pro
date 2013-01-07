@@ -39,7 +39,10 @@ SOURCES += src/main.cpp\
     src/ui/JoystickConfiguration.cpp \
     src/input/Joystick.cpp \
     src/ui/JoystickCalibration.cpp \
-    src/ui/Console.cpp
+    src/ui/Console.cpp \
+    src/ui/QtPlot/qcustomplot.cpp \
+    src/ui/Plot.cpp \
+    src/ui/HUD.cpp
 
 HEADERS  += \
     src/IHMCore.h \
@@ -62,7 +65,10 @@ HEADERS  += \
     src/protocol/message/Messages.h \
     src/protocol/message/MessageSystem.h \
     src/protocol/message/MessageSensor.h \
-    src/protocol/message/MessageMotor.h
+    src/protocol/message/MessageMotor.h \
+    src/ui/QtPlot/qcustomplot.h \
+    src/ui/Plot.h \
+    src/ui/HUD.h
 
 FORMS    += \
     src/ui/JoyStickStatus.ui \

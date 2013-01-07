@@ -9,6 +9,16 @@
 
 #define mapValue(value, src_min, src_max, dst_min, dst_max) ( (value-src_min)*(dst_max-dst_min)/(src_max-src_min)+dst_min )
 
+#define ACCX "ACCX"
+#define ACCY "ACCY"
+#define ACCZ "ACCZ"
+#define GYROX "GYROX"
+#define GYROY "GYROY"
+#define GYROZ "GYROZ"
+#define ROLL "ROLL"
+#define PITCH "PITCH"
+#define YAW "YAW"
+
 class UAV : public QObject
 {
     Q_OBJECT
@@ -121,6 +131,10 @@ signals:
     void eulerChange(double roll, double pitch, double yaw);
 
     void motorChange(int fl, int fr, int rl, int rr);
+
+    void updateValue(QString name, float);
+    void updateValue(QString name, double);
+    void updateValue(QString name, int);
 
 public slots:
     void updateRollPID(float kP, float kI, float kD);

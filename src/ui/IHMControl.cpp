@@ -30,7 +30,8 @@ IHMControl* IHMControl::instance()
 IHMControl::IHMControl(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::IHMControl),
-    styleFileName(QCoreApplication::applicationDirPath() + "/style-default.css")
+    styleFileName(QCoreApplication::applicationDirPath() + "/style-default.css"),
+    centerStackActionGroup(new QActionGroup(this))
 {
 
     loadSettings();
@@ -53,7 +54,6 @@ IHMControl::IHMControl(QWidget *parent) :
     // Setup corners
     setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-    //qApp->setStyle("oxygen");
     loadStylesheet();
 
     generateToolBar();
@@ -65,11 +65,21 @@ IHMControl::IHMControl(QWidget *parent) :
     gMapURL = "http://www.google.fr";
     webView->setUrl(QUrl(gMapURL));*/
 
-    /*uavView = new UAVView(this);
-    setCentralWidget(uavView);*/
+
+
+    centerStackActionGroup->setExclusive(true);
+
+    centerStack = new QStackedWidget(this);
+    setCentralWidget(centerStack);
+
+    hud = new HUD(this);
+    addCentralWidget(hud,tr("HUD"), QIcon(":/files/images/gauge.png"));
 
     console = new Console(this);
-    setCentralWidget(console);
+    addCentralWidget(console,tr("Console"), QIcon(":/files/images/console.png"));
+
+    plot = new Plot(this);
+    addCentralWidget(plot,tr("Plots"), QIcon(":/files/images/analyser.png"));
 
     joystickStatus = new JoyStickStatus(this);
     addDockWidget(Qt::LeftDockWidgetArea, joystickStatus);
@@ -97,17 +107,27 @@ IHMControl::IHMControl(QWidget *parent) :
     addDockWidget(Qt::RightDockWidgetArea, pidBox);
 
     QDockWidget* gaugesView1Dock = new QDockWidget(tr("Gauges"),this);
+
     gaugesView = new GaugesView(tr("Gauges"),this);
     gaugesView1Dock->setWidget(gaugesView);
     gaugesView1Dock->setObjectName("IHMCONTROL_GAUGES_VIEW_DOCK1");
     addDockWidget(Qt::LeftDockWidgetArea, gaugesView1Dock);
+
+    gaugesView->addGauge("ACCX",0.0f,-180,180.0f);
+    gaugesView->addGauge("ACCY",0,-180,180);
+    gaugesView->addGauge("ACCZ",0,-180,180);
+    gaugesView->addGauge("GYROX",0,-180,180);
+    gaugesView->addGauge("GYROY",0,-180,180);
+    gaugesView->addGauge("GYROZ",0,-180,180);
+    gaugesView->addGauge("ROLL",0,-180,180);
+    gaugesView->addGauge("PITCH",0,-180,180);
+    gaugesView->addGauge("YAW",0,-180,180);
 
     qDebug() << "Settings file: " << settings.fileName();
 
     // Restore the window position and size
     if (settings.contains(getWindowGeometryKey()))
     {
-        qDebug() << "LOAD GEOMETRY";
         restoreGeometry(settings.value(getWindowGeometryKey()).toByteArray());
     }
 
@@ -124,7 +144,7 @@ IHMControl::IHMControl(QWidget *parent) :
     protocol->openSerial();
 
     show();
-    this->statusBar()->showMessage("kikoolol");
+    //this->statusBar()->showMessage("kikoolol");
 }
 
 IHMControl::~IHMControl()
@@ -215,6 +235,33 @@ void IHMControl::generateToolBar()
     ui->toolBar->addWidget(armedStatus);
     connect(uav, SIGNAL(armed()), armedStatus, SLOT(turnOn()));
     connect(uav, SIGNAL(disarmed()), armedStatus, SLOT(turnOff()));
+
+    ui->toolBar->addSeparator();
+}
+
+void IHMControl::addCentralWidget(QWidget* widget, const QString& title, QIcon icon)
+{
+    if (centerStack->indexOf(widget) == -1)
+    {
+        centerStack->addWidget(widget);
+        QAction* tmpAction = ui->toolBar->addAction(icon,title);
+        tmpAction->setCheckable(true);
+        tmpAction->setText(title);
+        QVariant var;
+        var.setValue((QWidget*)widget);
+        tmpAction->setData(var);
+        centerStackActionGroup->addAction(tmpAction);
+        connect(tmpAction,SIGNAL(triggered()),this, SLOT(showCentralWidget()));
+        connect(widget, SIGNAL(visibilityChanged(bool)), tmpAction, SLOT(setChecked(bool)));
+        tmpAction->setChecked(widget->isVisible());
+    }
+}
+
+void IHMControl::showCentralWidget()
+{
+    QAction* action = qobject_cast<QAction *>(sender());
+    QWidget* widget = qVariantValue<QWidget *>(action->data());
+    centerStack->setCurrentWidget(widget);
 }
 
 void IHMControl::showSerialConfiguration()

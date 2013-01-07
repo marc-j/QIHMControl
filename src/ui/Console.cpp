@@ -68,6 +68,7 @@ void Console::showEvent(QShowEvent *event)
     Q_UNUSED(event);
 
     connect(protocol, SIGNAL(datasReceive(QByteArray*)), this, SLOT(datasReceive(QByteArray*)));
+    emit visibilityChanged(true);
 }
 
 void Console::hideEvent(QHideEvent *event)
@@ -75,4 +76,5 @@ void Console::hideEvent(QHideEvent *event)
     Q_UNUSED(event);
 
     disconnect(protocol, SIGNAL(datasReceive(QByteArray*)), this, SLOT(datasReceive(QByteArray*)));
+    emit visibilityChanged(false);
 }

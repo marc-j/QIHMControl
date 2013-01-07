@@ -4,8 +4,10 @@
 #include <QSettings>
 #include <QMainWindow>
 #include <QStackedWidget>
+#include <QActionGroup>
 #include <QStatusBar>
 #include <QPointer>
+#include <QPushButton>
 
 #include "ui/SystemStatus.h"
 #include "ui/JoyStickStatus.h"
@@ -16,6 +18,8 @@
 #include "ui/Cube3D.h"
 #include "ui/UAVView.h"
 #include "ui/Console.h"
+#include "ui/Plot.h"
+#include "ui/HUD.h"
 
 #include "protocol/Protocol.h"
 #include "input/Joystick.h"
@@ -39,6 +43,7 @@ private:
 
     /** @brief Reload the CSS style sheet */
     void loadStylesheet();
+    void addCentralWidget(QWidget* widget, const QString& title, QIcon icon);
     QString getWindowStateKey();
     QString getWindowGeometryKey();
 
@@ -46,6 +51,7 @@ public slots:
     void showSerialConfiguration();
     void showJoystickConfiguration();
     void closeEvent(QCloseEvent* event);
+    void showCentralWidget();
     void showCriticalMessage(const QString& title, const QString& message);
     void showInfoMessage(const QString& title, const QString& message);
     void showStatusMessage(const QString& status, int timeout);
@@ -61,6 +67,7 @@ protected:
 
     QSettings settings;
     QStackedWidget *centerStack;
+    QActionGroup* centerStackActionGroup;
     QPointer<SystemStatus> systemStatus;
     QPointer<JoyStickStatus> joystickStatus;
     QPointer<MotorStatus> motorStatus;
@@ -76,6 +83,8 @@ protected:
     Cube3D* cube3d;
     UAVView* uavView;
     Console* console;
+    Plot* plot;
+    HUD* hud;
 
     void loadSettings();
     void saveSettings();

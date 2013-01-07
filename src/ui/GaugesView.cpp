@@ -1,10 +1,11 @@
 #include "GaugesView.h"
 
-GaugesView::GaugesView(/*QStringList* plotList,*/ QString title, QWidget *parent) :
+GaugesView::GaugesView(QString title, QWidget *parent) :
     QGraphicsView(parent),
     vwidth(80.0f),
     vheight(80.0f),
-    refreshTimer(new QTimer(this))
+    refreshTimer(new QTimer(this)),
+    gaugesList(new QStringList())
 {
     setWindowTitle(title);
     setAutoFillBackground(true);
@@ -17,6 +18,8 @@ GaugesView::GaugesView(/*QStringList* plotList,*/ QString title, QWidget *parent
     // Refresh timer
     refreshTimer->setInterval(180); //
     connect(refreshTimer, SIGNAL(timeout()), this, SLOT(triggerUpdate()));
+
+    connectUAV();
 }
 
 GaugesView::~GaugesView()
@@ -25,7 +28,47 @@ GaugesView::~GaugesView()
     {
         delete this->refreshTimer;
     }
+
+    if(this->gaugesList) {
+        delete this->gaugesList;
+    }
 }
+
+void GaugesView::addGauge(QString name, float value, float min, float max)
+{
+
+    if (!gaugesList->contains(name) ) {
+        Gauge* tmpGauge = new Gauge();
+        tmpGauge->min = min;
+        tmpGauge->max = max;
+        tmpGauge->name = name;
+        tmpGauge->value = value;
+
+        gaugesMap.insert(name, tmpGauge);
+        gaugesList->append(name);
+
+        update();
+    }
+}
+
+void GaugesView::updateValue(QString name, float value)
+{
+    if (gaugesMap.contains(name)) {
+        gaugesMap.value(name)->value = value;
+        update();
+    }
+}
+
+void GaugesView::updateValue(QString name, double value)
+{
+    updateValue(name, (float) value);
+}
+
+void GaugesView::updateValue(QString name, int value)
+{
+    updateValue(name, (float) value);
+}
+
 
 QSize GaugesView::sizeHint() const
 {
@@ -62,9 +105,14 @@ void GaugesView::renderOverlay()
     float topSpacing = leftSpacing;
     float yCoord = topSpacing + gaugeWidth/2.0f;
 
-    for (int i = 0; i < 9; ++i)
+    for (int i = 0; i < gaugesList->length(); ++i)
     {
-        drawGauge(xCoord, yCoord, gaugeWidth/2.0f, 0, 100, "ZACC: ", 0, gaugeColor, &painter, false, qMakePair(0.0f, 0.5f), qMakePair(0.7f, 1.0f), true);
+        if (!gaugesMap.contains(gaugesList->at(i))) {
+            continue;
+        }
+
+        Gauge *tmpGauge = gaugesMap.value(gaugesList->at(i));
+        drawGauge(xCoord, yCoord, gaugeWidth/2.0f, tmpGauge->min, tmpGauge->max, tmpGauge->name, tmpGauge->value, gaugeColor, &painter, false, qMakePair(0.0f, 0.5f), qMakePair(0.7f, 1.0f), true);
         xCoord += gaugeWidth + leftSpacing;
 
         // Move one row down if necessary
@@ -294,6 +342,14 @@ void GaugesView::paintText(QString text, QColor color, float fontSize, float ref
     painter->setPen(prevPen);
 }
 
+void GaugesView::connectUAV()
+{
+    uav = UAV::instance();
+    connect(uav, SIGNAL(updateValue(QString,double)), this, SLOT(updateValue(QString,double)));
+    connect(uav, SIGNAL(updateValue(QString,float)), this, SLOT(updateValue(QString,float)));
+    connect(uav, SIGNAL(updateValue(QString,int)), this, SLOT(updateValue(QString,int)));
+}
+
 void GaugesView::showEvent(QShowEvent* event)
 {
     // React only to internal (pre-display)
@@ -316,3 +372,4 @@ void GaugesView::triggerUpdate()
     // Only repaint the regions necessary
     update(this->geometry());
 }
+

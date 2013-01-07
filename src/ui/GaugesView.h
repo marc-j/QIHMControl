@@ -6,11 +6,15 @@
 #include <QTimer>
 #include <QMap>
 #include <QContextMenuEvent>
+#include <QMap>
 #include <QPair>
+#include <QStringList>
 #include <cmath>
 
+#include "UAV.h"
+
 namespace Ui {
-class GaugesView;
+    class GaugesView;
 }
 
 class GaugesView : public QGraphicsView
@@ -18,8 +22,23 @@ class GaugesView : public QGraphicsView
     Q_OBJECT
     
 public:
-    explicit GaugesView(/*QStringList* plotList,*/ QString title="", QWidget *parent = 0);
+    explicit GaugesView(QString title="", QWidget *parent = 0);
     ~GaugesView();
+
+
+    struct Gauge {
+        float min;
+        float max;
+        QString name;
+        float value;
+    };
+
+    void addGauge(QString name, float value, float min, float max);
+
+public slots:
+    void updateValue(QString name, float);
+    void updateValue(QString name, double);
+    void updateValue(QString name, int);
 
 protected slots:
     void renderOverlay();
@@ -43,12 +62,19 @@ protected:
     void drawGauge(float xRef, float yRef, float radius, float min, float max, const QString name, float value, const QColor& color, QPainter* painter, bool symmetric, QPair<float, float> goodRange, QPair<float, float> criticalRange, bool solid=true);
     void paintText(QString text, QColor color, float fontSize, float refX, float refY, QPainter* painter);
 
+    void connectUAV();
+
     double scalingFactor;
     float vwidth;
     float vheight;
 
     QTimer* refreshTimer;      ///< The main timer, controls the update rate
     static const int updateInterval = 300; ///< Update interval in milliseconds
+
+    QMap<QString,Gauge*> gaugesMap;
+    QStringList* gaugesList;
+
+    UAV* uav;
 };
 
 #endif // GAUGESVIEW_H
