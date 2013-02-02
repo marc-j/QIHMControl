@@ -74,12 +74,15 @@ void UAV::receiveMessage(uavlink_message_t msg)
             uavlink_message_sensor_t sensor;
             uavlink_message_sensor_decode(&msg,&sensor);
 
-            accX = sensor.accX/10.0f;
-            accY = sensor.accY/10.0f;
-            accZ = sensor.accZ/10.0f;
+            accX = sensor.accX/1000.0f;
+            accY = sensor.accY/1000.0f;
+            accZ = sensor.accZ/1000.0f;
             gyroX = sensor.gyroX/10.0f;
             gyroY = sensor.gyroY/10.0f;
             gyroZ = sensor.gyroZ/10.0f;
+            magX = sensor.magX/10.0f;
+            magY = sensor.magY/10.0f;
+            magZ = sensor.magZ/10.0f;
             roll = sensor.roll/10.0f;
             pitch = sensor.pitch/10.0f;
             yaw = sensor.yaw/10.0f;
@@ -90,6 +93,9 @@ void UAV::receiveMessage(uavlink_message_t msg)
             emit updateValue(GYROX, gyroX);
             emit updateValue(GYROY, gyroY);
             emit updateValue(GYROZ, gyroZ);
+            emit updateValue(MAGX, magX);
+            emit updateValue(MAGY, magY);
+            emit updateValue(MAGZ, magZ);
             emit updateValue(ROLL, roll);
             emit updateValue(PITCH, pitch);
             emit updateValue(YAW, yaw);
@@ -104,6 +110,14 @@ void UAV::receiveMessage(uavlink_message_t msg)
             uavlink_message_motor_decode(&msg,&motor);
 
             emit motorChange(motor.motorFrontLeft, motor.motorFrontRight, motor.motorRearLeft, motor.motorRearRight);
+            break;
+        case UAVLINK_MSG_SENSOR_RAW:
+            uavlink_message_sensor_raw_t sensorRaw;
+            uavlink_message_sensor_raw_decode(&msg,&sensorRaw);
+
+            emit accRawChange(sensorRaw.accX, sensorRaw.accY, sensorRaw.accZ);
+            emit gyroRawChange(sensorRaw.gyroX, sensorRaw.gyroY, sensorRaw.gyroZ);
+            emit magRawChange(sensorRaw.magX, sensorRaw.magY, sensorRaw.magZ);
             break;
     }
 }

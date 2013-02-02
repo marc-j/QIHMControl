@@ -1,17 +1,19 @@
 #ifndef UAVVIEW_H
 #define UAVVIEW_H
 
-#include <QGLWidget>
+#include "qglview.h"
 #include <qglcamera.h>
 #include <QPaintEvent>
 #include <QTimer>
 #include <QShowEvent>
 #include <QHideEvent>
 
+#include "UAV.h"
+
 class QGLAbstractScene;
 class QGLSceneNode;
 
-class UAVView : public QGLWidget
+class UAVView : public QGLView
 {
     Q_OBJECT
 public:
@@ -21,20 +23,18 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
-public slots:
-    void setPitch(float);
-    void setRoll(float);
-    void setYaw(float);
-    void setAxis(float, float, float);
+signals:
+    void visibilityChanged(bool);
 
-    void paintUAV();
+public slots:
+    void setPitch(double);
+    void setRoll(double);
+    void setYaw(double);
+    void setAxis(double, double, double);
     
 protected:
-    //void initializeGL(QGLPainter *painter);
-   // void paintGL(QGLPainter *painter);
-    void initializeGL();
-    void paintEvent(QPaintEvent *event);
-    void resizeGL(int w, int h);
+    void initializeGL(QGLPainter *painter);
+    void paintGL(QGLPainter *painter);
 
     void showEvent(QShowEvent* event);
     void hideEvent(QHideEvent* event);
@@ -42,14 +42,12 @@ protected:
 private:
     QGLAbstractScene *m_scene;
     QGLSceneNode *m_rootNode;
-    QGLCamera camera;
-    QGLSceneNode *cube;
 
-    float pitch;
-    float roll;
-    float yaw;
+    double pitch;
+    double roll;
+    double yaw;
 
-    QTimer* refreshTimer;
+    UAV* uav;
 };
 
 #endif // UAVVIEW_H

@@ -50,6 +50,7 @@ private:
 public slots:
     void showSerialConfiguration();
     void showJoystickConfiguration();
+    void showSensorsCalibration();
     void closeEvent(QCloseEvent* event);
     void showCentralWidget();
     void showCriticalMessage(const QString& title, const QString& message);

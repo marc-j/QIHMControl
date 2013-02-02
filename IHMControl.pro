@@ -42,7 +42,8 @@ SOURCES += src/main.cpp\
     src/ui/Console.cpp \
     src/ui/QtPlot/qcustomplot.cpp \
     src/ui/Plot.cpp \
-    src/ui/HUD.cpp
+    src/ui/HUD.cpp \
+    src/ui/SensorsCalibration.cpp
 
 HEADERS  += \
     src/IHMCore.h \
@@ -68,7 +69,8 @@ HEADERS  += \
     src/protocol/message/MessageMotor.h \
     src/ui/QtPlot/qcustomplot.h \
     src/ui/Plot.h \
-    src/ui/HUD.h
+    src/ui/HUD.h \
+    src/ui/SensorsCalibration.h
 
 FORMS    += \
     src/ui/JoyStickStatus.ui \
@@ -78,7 +80,8 @@ FORMS    += \
     src/ui/PIDBox.ui \
     src/ui/SerialConfiguration.ui \
     src/ui/JoystickConfiguration.ui \
-    src/ui/Console.ui
+    src/ui/Console.ui \
+    src/ui/SensorsCalibration.ui
 
 RESOURCES += \
     files.qrc

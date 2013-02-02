@@ -9,5 +9,6 @@
         <file>files/images/console.png</file>
         <file>files/images/analyser.png</file>
         <file>files/images/gauge.png</file>
+        <file>files/images/plane.png</file>
     </qresource>
 </RCC>

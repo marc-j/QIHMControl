@@ -88,6 +88,8 @@ void Protocol::onDataAvailable()
         const unsigned char data = datas.at(i);
         emit receiveByte(data);
 
+        //qDebug() << data;
+
         switch(step) {
             case STX1:
                 if (data == 0xFF)

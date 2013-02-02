@@ -14,6 +14,9 @@
 #define GYROX "GYROX"
 #define GYROY "GYROY"
 #define GYROZ "GYROZ"
+#define MAGX "MAGX"
+#define MAGY "MAGY"
+#define MAGZ "MAGZ"
 #define ROLL "ROLL"
 #define PITCH "PITCH"
 #define YAW "YAW"
@@ -86,6 +89,9 @@ protected:
     double gyroX;
     double gyroY;
     double gyroZ;
+    double magX;
+    double magY;
+    double magZ;
 
     double pitch;
     double roll;
@@ -134,6 +140,10 @@ signals:
     void updateValue(QString name, float);
     void updateValue(QString name, double);
     void updateValue(QString name, int);
+
+    void accRawChange(int16_t, int16_t, int16_t);
+    void gyroRawChange(int16_t, int16_t, int16_t);
+    void magRawChange(int16_t, int16_t, int16_t);
 
 public slots:
     void updateRollPID(float kP, float kI, float kD);

@@ -14,6 +14,7 @@
 #include "ui_IHMControl.h"
 #include "ui/SerialConfiguration.h"
 #include "ui/JoystickConfiguration.h"
+#include "ui/SensorsCalibration.h"
 #include "ui/Cube3D.h"
 #include "ui/UAVView.h"
 
@@ -81,6 +82,9 @@ IHMControl::IHMControl(QWidget *parent) :
     plot = new Plot(this);
     addCentralWidget(plot,tr("Plots"), QIcon(":/files/images/analyser.png"));
 
+    uavView = new UAVView(this);
+    addCentralWidget(uavView, tr("3D"), QIcon(":/files/images/plane.png"));
+
     joystickStatus = new JoyStickStatus(this);
     addDockWidget(Qt::LeftDockWidgetArea, joystickStatus);
 
@@ -113,12 +117,15 @@ IHMControl::IHMControl(QWidget *parent) :
     gaugesView1Dock->setObjectName("IHMCONTROL_GAUGES_VIEW_DOCK1");
     addDockWidget(Qt::LeftDockWidgetArea, gaugesView1Dock);
 
-    gaugesView->addGauge("ACCX",0.0f,-180,180.0f);
-    gaugesView->addGauge("ACCY",0,-180,180);
-    gaugesView->addGauge("ACCZ",0,-180,180);
-    gaugesView->addGauge("GYROX",0,-180,180);
-    gaugesView->addGauge("GYROY",0,-180,180);
-    gaugesView->addGauge("GYROZ",0,-180,180);
+    gaugesView->addGauge("ACCX",0.0f,-1.5f,1.5f);
+    gaugesView->addGauge("ACCY",0,-1.5f,1.5f);
+    gaugesView->addGauge("ACCZ",0,-1.5,1.5f);
+    gaugesView->addGauge("GYROX",0,-1000,1000);
+    gaugesView->addGauge("GYROY",0,-1000,1000);
+    gaugesView->addGauge("GYROZ",0,-1000,1000);
+    gaugesView->addGauge("MAGX",0,-250.0f,250.0f);
+    gaugesView->addGauge("MAGY",0,-250.0f,250.0f);
+    gaugesView->addGauge("MAGZ",0,-250.0f,250.0f);
     gaugesView->addGauge("ROLL",0,-180,180);
     gaugesView->addGauge("PITCH",0,-180,180);
     gaugesView->addGauge("YAW",0,-180,180);
@@ -139,6 +146,7 @@ IHMControl::IHMControl(QWidget *parent) :
 
     connect(ui->actionSerial, SIGNAL(triggered()), this, SLOT(showSerialConfiguration()));
     connect(ui->actionJoystick, SIGNAL(triggered()), this, SLOT(showJoystickConfiguration()));
+    connect(ui->actionSenCalib, SIGNAL(triggered()), this, SLOT(showSensorsCalibration()));
 
     joystick->startPolling();
     protocol->openSerial();
@@ -274,6 +282,12 @@ void IHMControl::showJoystickConfiguration()
 {
     JoystickConfiguration* joystick = new JoystickConfiguration();
     joystick->show();
+}
+
+void IHMControl::showSensorsCalibration()
+{
+    SensorsCalibration* calibration = new SensorsCalibration();
+    calibration->show();
 }
 
 QString IHMControl::getWindowStateKey()

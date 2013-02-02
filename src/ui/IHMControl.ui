@@ -44,8 +44,15 @@
     <addaction name="separator"/>
     <addaction name="actionJoystick"/>
    </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Outils</string>
+    </property>
+    <addaction name="actionSenCalib"/>
+   </widget>
    <addaction name="menuIHMControl_V0_1_By_Alienx"/>
    <addaction name="menu_Serial"/>
+   <addaction name="menuOutils"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -107,6 +114,11 @@
    </property>
    <property name="text">
     <string>&amp;Joystick</string>
+   </property>
+  </action>
+  <action name="actionSenCalib">
+   <property name="text">
+    <string>Sensors Calibration</string>
    </property>
   </action>
  </widget>

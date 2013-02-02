@@ -53,6 +53,7 @@ void GaugesView::addGauge(QString name, float value, float min, float max)
 
 void GaugesView::updateValue(QString name, float value)
 {
+
     if (gaugesMap.contains(name)) {
         gaugesMap.value(name)->value = value;
         update();
@@ -166,7 +167,7 @@ void GaugesView::drawGauge(float xRef, float yRef, float radius, float min, floa
     drawCircle(xRef, yRef+nameHeight, radius, 0.0f, color, painter);
 
     QString label;
-    label.sprintf("% 06.1f", value);
+    label.sprintf("%06.1f", value);
 
     // Text
     // height

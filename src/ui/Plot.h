@@ -5,6 +5,7 @@
 #include <QHideEvent>
 #include <QShowEvent>
 #include "ui/QtPlot/qcustomplot.h"
+#include "UAV.h"
 
 namespace Ui {
 class Plot;
@@ -20,14 +21,22 @@ public:
 
 signals:
     void visibilityChanged(bool);
+
+private slots:
+    void updateValue(QString name, double);
     
 private:
-    QCustomPlot *plot;
+    QCustomPlot *plotX;
+    QCustomPlot *plotY;
+    QCustomPlot *plotZ;
 
     void drawUI();
     void drawPlot();
 
     QList<QColor>* colors;
+
+
+    UAV* uav;
 
     void showEvent(QShowEvent* event);
     void hideEvent(QHideEvent* event);
