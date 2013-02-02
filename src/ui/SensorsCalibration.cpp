@@ -1,5 +1,6 @@
 #include "SensorsCalibration.h"
 #include "ui_SensorsCalibration.h"
+#include "math.h"
 
 SensorsCalibration::SensorsCalibration(QWidget *parent) :
     QWidget(parent),
@@ -88,6 +89,49 @@ void SensorsCalibration::rawChange(int16_t x, int16_t y, int16_t z) {
     }
 }
 
+void SensorsCalibration::calibrate()
+{
+    int sMin;
+    int sMax;
+    float gravity = ui->oneG->text().toFloat();
+    float offset, scale;
+
+    for (int i=0;i<3;i++) {
+        sMin = 999999999999.0;
+        sMax = 0;
+        for (int j=0;j<datas[i].size();j++) {
+            sMin = std::min(sMin, (int) datas[i].at(j));
+            sMax = std::max(sMax, (int) datas[i].at(j));
+        }
+
+        offset = ((float)sMin + (float)sMax) / 2.0f;
+        scale = gravity / ( ((float)sMax) - offset);
+
+        //oneG = (scaleX(sensorX - offsetX))² + (scaleY(sensorY - offsetY))² + (scaleZ(sensorZ - offsetZ))² = 9.81²
+
+        switch (i) {
+            case 0: //X
+                ui->minX->setText( QString::number(sMin) );
+                ui->maxX->setText( QString::number(sMax) );
+                ui->offsetX->setText( QString::number(offset) );
+                ui->scaleX->setText( QString::number(scale) );
+                break;
+            case 1: //Y
+                ui->minY->setText( QString::number(sMin) );
+                ui->maxY->setText( QString::number(sMax) );
+                ui->offsetY->setText( QString::number(offset) );
+                ui->scaleY->setText( QString::number(scale) );
+                break;
+            case 2: //Z
+                ui->minZ->setText( QString::number(sMin) );
+                ui->maxZ->setText( QString::number(sMax) );
+                ui->offsetZ->setText( QString::number(offset) );
+                ui->scaleZ->setText( QString::number(scale) );
+                break;
+        }
+    }
+}
+
 void SensorsCalibration::startSampling()
 {
     sampling = ui->btnSampling->text() == "Sampling";
@@ -95,6 +139,7 @@ void SensorsCalibration::startSampling()
         ui->btnSampling->setText("Stop");
     } else {
         ui->btnSampling->setText("Sampling");
+        calibrate();
     }
 }
 

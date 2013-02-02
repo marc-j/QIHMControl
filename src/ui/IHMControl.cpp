@@ -117,9 +117,9 @@ IHMControl::IHMControl(QWidget *parent) :
     gaugesView1Dock->setObjectName("IHMCONTROL_GAUGES_VIEW_DOCK1");
     addDockWidget(Qt::LeftDockWidgetArea, gaugesView1Dock);
 
-    gaugesView->addGauge("ACCX",0.0f,-1.5f,1.5f);
-    gaugesView->addGauge("ACCY",0,-1.5f,1.5f);
-    gaugesView->addGauge("ACCZ",0,-1.5,1.5f);
+    gaugesView->addGauge("ACCX",0.0f,-100.0f,100.0f);
+    gaugesView->addGauge("ACCY",0,-100.0f,100.0f);
+    gaugesView->addGauge("ACCZ",0,-100.0f,100.0f);
     gaugesView->addGauge("GYROX",0,-1000,1000);
     gaugesView->addGauge("GYROY",0,-1000,1000);
     gaugesView->addGauge("GYROZ",0,-1000,1000);

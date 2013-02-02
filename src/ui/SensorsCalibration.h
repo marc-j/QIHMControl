@@ -25,6 +25,7 @@ private slots:
     void sensorChange(int);
 
 private:
+    void calibrate();
     Ui::SensorsCalibration *ui;
 
     QCustomPlot *plotXY;

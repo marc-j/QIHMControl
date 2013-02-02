@@ -63,10 +63,6 @@ HEADERS  += \
     src/input/Joystick.h \
     src/ui/JoystickCalibration.h \
     src/ui/Console.h \
-    src/protocol/message/Messages.h \
-    src/protocol/message/MessageSystem.h \
-    src/protocol/message/MessageSensor.h \
-    src/protocol/message/MessageMotor.h \
     src/ui/QtPlot/qcustomplot.h \
     src/ui/Plot.h \
     src/ui/HUD.h \
