@@ -18,14 +18,27 @@ UAV::UAV(QObject *parent) :
     latitude(0.0),
     longitude(0.0),
     altitude(0.0),
-    systemIsArmed(false)
+    systemIsArmed(false),
+    flightMode(FLIGHTMODE_WAITING)
 {
     readSettings();
 
     protocol = Protocol::instance();
     connect(protocol, SIGNAL(receiveMessage(uavlink_message_t)), this, SLOT(receiveMessage(uavlink_message_t)));
+    connect(this, SIGNAL(sendMessage(uavlink_message_t)), protocol, SLOT(sendMessage(uavlink_message_t)));
 
-    //emit disarmed();
+    joystick = Joystick::instance();
+    connect(joystick, SIGNAL(joystickChanged(QList<int>,QList<double>,QList<bool>)), this, SLOT(joystickChanged(QList<int>,QList<double>,QList<bool>)));
+
+    emit disarmed();
+
+    poolTimer = new QTimer(this);
+    poolTimer->setInterval(20);
+
+    connect(poolTimer, SIGNAL(timeout()), this, SLOT(timerHandle()));
+    poolTimer->start();
+
+
 }
 
 UAV::~UAV()
@@ -38,6 +51,8 @@ void UAV::updateRollPID(float kP, float kI, float kD)
     rollPID.kP = kP;
     rollPID.kI = kI;
     rollPID.kD = kD;
+
+    sendPID();
 }
 
 void UAV::updatePitchPID(float kP, float kI, float kD)
@@ -45,6 +60,8 @@ void UAV::updatePitchPID(float kP, float kI, float kD)
     pitchPID.kP = kP;
     pitchPID.kI = kI;
     pitchPID.kD = kD;
+
+    sendPID();
 }
 
 void UAV::updateYawPID(float kP, float kI, float kD)
@@ -52,6 +69,8 @@ void UAV::updateYawPID(float kP, float kI, float kD)
     yawPID.kP = kP;
     yawPID.kI = kI;
     yawPID.kD = kD;
+
+    sendPID();
 }
 
 void UAV::receiveMessage(uavlink_message_t msg)
@@ -118,8 +137,88 @@ void UAV::receiveMessage(uavlink_message_t msg)
             emit accRawChange(sensorRaw.accX, sensorRaw.accY, sensorRaw.accZ);
             emit gyroRawChange(sensorRaw.gyroX, sensorRaw.gyroY, sensorRaw.gyroZ);
             emit magRawChange(sensorRaw.magX, sensorRaw.magY, sensorRaw.magZ);
+            emit compassRawChange(sensorRaw.accX, sensorRaw.accY, sensorRaw.accZ, sensorRaw.magX, sensorRaw.magY, sensorRaw.magZ);
+            break;
+        case UAVLINK_MSG_SENSOR_VARIANCE:
+            uavlink_message_sensor_variance_t sensorVariance;
+            uavlink_message_sensor_variance_decode(&msg,&sensorVariance);
+            qDebug() << "Receive variance";
+
+            float accX, accY, accZ,
+                  gyroX, gyroY, gyroZ;
+
+            accX = sensorVariance.accX / 10000.0f;
+            accY = sensorVariance.accY / 10000.0f;
+            accZ = sensorVariance.accZ / 10000.0f;
+            gyroX = sensorVariance.gyroX / 10000.0f;
+            gyroY = sensorVariance.gyroY / 10000.0f;
+            gyroZ = sensorVariance.gyroZ / 10000.0f;
+
+            emit sensorsVariance(accX, accY, accZ, gyroX, gyroY, gyroZ);
             break;
     }
+}
+
+void UAV::sendGetVariance()
+{
+    changeFlightMode(FLIGHTMODE_VARIANCE); // set to get variance
+}
+
+void UAV::changeFlightMode(uint8_t mode)
+{
+    flightMode = mode;
+}
+
+void UAV::sendPID()
+{
+    uavlink_message_pid_t pid;
+    pid.rollKP = (int) (rollPID.kP * 100.0f);
+    pid.rollKI = (int) (rollPID.kI * 100.0f);
+    pid.rollKD = (int) (rollPID.kD * 100.0f);
+    pid.pitchKP = (int) (pitchPID.kP * 100.0f);
+    pid.pitchKI = (int) (pitchPID.kI * 100.0f);
+    pid.pitchKD = (int) (pitchPID.kD * 100.0f);
+    pid.yawKP = (int) (yawPID.kP * 100.0f);
+    pid.yawKI = (int) (yawPID.kI * 100.0f);
+    pid.yawKD = (int) (yawPID.kD * 100.0f);
+
+    uavlink_message_t msg = uavlink_message_pid_encode(&pid);
+    emit sendMessage(msg);
+    qDebug() << "Send PID";
+}
+
+void UAV::joystickChanged(QList<int> normAxis, QList<double> axis, QList<bool> buttons)
+{
+    commandRollAngle = normAxis.at(XAXIS);
+    commandPitchAngle = normAxis.at(YAXIS);
+    commandYawAngle = normAxis.at(ZAXIS);
+    commandThrust = normAxis.at(TAXIS);
+
+    if (buttons.at(BTN_ARMED) && lastBtnStatus != buttons.at(BTN_ARMED)) {
+        systemIsArmed = !systemIsArmed;
+    }
+    lastBtnStatus = buttons.at(BTN_ARMED);
+}
+
+void UAV::timerHandle()
+{
+    if (systemIsArmed) {
+        emit armed();
+    } else {
+        emit disarmed();
+    }
+
+    uavlink_message_command_t command;
+    command.roll = commandRollAngle;
+    command.pitch = commandPitchAngle;
+    command.yaw = commandYawAngle;
+    command.throttle = commandThrust;
+    command.flightMode = flightMode;
+    command.armed = systemIsArmed;
+
+    uavlink_message_t msg = uavlink_message_command_encode(&command);
+
+    emit sendMessage(msg);
 }
 
 

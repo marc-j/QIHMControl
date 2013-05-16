@@ -160,7 +160,11 @@ void Joystick::updateData()
 
         axis = (axis <= -deadZone || deadZone <= axis) ? axis : 0.0f;
 
-        data->axisNorm[i] = mapNumber(axis , -1, 1);
+        if (i == TAXIS) {
+            data->axisNorm[i] = mapNumberPPM(axis , -1, 1);
+        } else {
+            data->axisNorm[i] = mapNumber(axis , -1, 1);
+        }
         data->axisNorm[i] *= data->joyCalibration.inversed.at(i);
 
         data->axis[i] = axis;

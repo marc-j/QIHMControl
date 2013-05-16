@@ -63,6 +63,8 @@ public slots:
         emit serialMessage("Serial link disconnected.");
     }
 
+    void sendMessage(uavlink_message_t message);
+
 
 private slots:
     void onDataAvailable();

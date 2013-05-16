@@ -8,11 +8,16 @@
 
 #include "SDL/SDL.h"
 
-#define JOY_CENTER 1500
-#define JOY_MAX 2000
-#define JOY_MIN 1000
+#define JOY_CENTER 0
+#define JOY_MAX 90
+#define JOY_MIN -90
 
 #define mapNumber(value, min, max) ( (value-min)*(JOY_MAX-JOY_MIN)/(max-min)+JOY_MIN )
+
+#define JOY_PPM_MIN 1000
+#define JOY_PPM_MAX 2000
+#define mapNumberPPM(value, min, max) ( (value-min)*(JOY_PPM_MAX-JOY_PPM_MIN)/(max-min)+JOY_PPM_MIN )
+
 #define MAX(a,b) ((a) > (b) ? a : b)
 #define MIN(a,b) ((a) < (b) ? a : b)
 
@@ -20,6 +25,8 @@
 #define YAXIS 1
 #define ZAXIS 2
 #define TAXIS 3
+
+#define BTN_ARMED 4
 
 class Joystick : public QObject
 {

@@ -1,8 +1,9 @@
 #ifndef UAVVIEW_H
 #define UAVVIEW_H
 
-#include "qglview.h"
-#include <qglcamera.h>
+//#include "qglview.h"
+#include <Qt3D/qglview.h>
+#include <Qt3D/qglcamera.h>
 #include <QPaintEvent>
 #include <QTimer>
 #include <QShowEvent>

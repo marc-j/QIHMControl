@@ -12,7 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = IHMControl
 TEMPLATE = app
 
-CONFIG += qt3d
+CONFIG += opengl qt3d gnuplot
 LIBS += -lSDL
 
 include(libs/3rdparty/qextserialport/src/qextserialport.pri)
@@ -43,7 +43,8 @@ SOURCES += src/main.cpp\
     src/ui/QtPlot/qcustomplot.cpp \
     src/ui/Plot.cpp \
     src/ui/HUD.cpp \
-    src/ui/SensorsCalibration.cpp
+    src/ui/SensorsCalibration.cpp \
+    src/ui/SensorsVariance.cpp
 
 HEADERS  += \
     src/IHMCore.h \
@@ -66,7 +67,8 @@ HEADERS  += \
     src/ui/QtPlot/qcustomplot.h \
     src/ui/Plot.h \
     src/ui/HUD.h \
-    src/ui/SensorsCalibration.h
+    src/ui/SensorsCalibration.h \
+    src/ui/SensorsVariance.h
 
 FORMS    += \
     src/ui/JoyStickStatus.ui \
@@ -77,7 +79,8 @@ FORMS    += \
     src/ui/SerialConfiguration.ui \
     src/ui/JoystickConfiguration.ui \
     src/ui/Console.ui \
-    src/ui/SensorsCalibration.ui
+    src/ui/SensorsCalibration.ui \
+    src/ui/SensorsVariance.ui
 
 RESOURCES += \
     files.qrc

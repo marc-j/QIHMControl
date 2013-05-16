@@ -3,8 +3,10 @@
 
 #include <QSettings>
 #include <QDebug>
+#include <QTimer>
 
 #include "protocol/Protocol.h"
+#include "input/Joystick.h"
 
 #define mapValue(value, src_min, src_max, dst_min, dst_max) ( (value-src_min)*(dst_max-dst_min)/(src_max-src_min)+dst_min )
 
@@ -74,6 +76,16 @@ public:
         return systemIsArmed;
     }
 
+    void sendGetVariance();
+    void sendPID();
+
+    enum {
+        FLIGHTMODE_WAITING,
+        FLIGHTMODE_VARIANCE,
+        FLIGHTMODE_COMPASS_CALIBRATION,
+        FLIGHTMODE_NORMAL
+    };
+
 protected:
     explicit UAV(QObject *parent = 0);
 
@@ -102,11 +114,13 @@ protected:
     double altitude;
 
     bool systemIsArmed;
+    uint8_t flightMode;
+    bool lastBtnStatus;
 
-    double commandRollAngle;
-    double commandPitchAngle;
-    double commandYawAngle;
-    double commandThrust;
+    int commandRollAngle;
+    int commandPitchAngle;
+    int commandYawAngle;
+    int commandThrust;
 
     double mainLoop;
     double batteryVoltage;
@@ -119,6 +133,9 @@ protected:
     QSettings settings;
 
     Protocol* protocol;
+    Joystick* joystick;
+
+    QTimer* poolTimer;
 
     void saveSettings();
     void readSettings();
@@ -144,6 +161,10 @@ signals:
     void accRawChange(int16_t, int16_t, int16_t);
     void gyroRawChange(int16_t, int16_t, int16_t);
     void magRawChange(int16_t, int16_t, int16_t);
+    void compassRawChange(int16_t, int16_t, int16_t, int16_t, int16_t, int16_t);
+
+    void sensorsVariance(float accX, float accY, float accZ, float gyroX, float gyroY, float gyroZ);
+    void sendMessage(uavlink_message_t);
 
 public slots:
     void updateRollPID(float kP, float kI, float kD);
@@ -151,6 +172,12 @@ public slots:
     void updateYawPID(float kP, float kI, float kD);
 
     void receiveMessage(uavlink_message_t);
+    void changeFlightMode(uint8_t mode);
+
+    void joystickChanged(QList<int>,QList<double>, QList<bool>);
+
+private slots:
+    void timerHandle();
 
 };
 

@@ -15,6 +15,7 @@
 #include "ui/SerialConfiguration.h"
 #include "ui/JoystickConfiguration.h"
 #include "ui/SensorsCalibration.h"
+#include "ui/SensorsVariance.h"
 #include "ui/Cube3D.h"
 #include "ui/UAVView.h"
 
@@ -117,9 +118,9 @@ IHMControl::IHMControl(QWidget *parent) :
     gaugesView1Dock->setObjectName("IHMCONTROL_GAUGES_VIEW_DOCK1");
     addDockWidget(Qt::LeftDockWidgetArea, gaugesView1Dock);
 
-    gaugesView->addGauge("ACCX",0.0f,-100.0f,100.0f);
-    gaugesView->addGauge("ACCY",0,-100.0f,100.0f);
-    gaugesView->addGauge("ACCZ",0,-100.0f,100.0f);
+    gaugesView->addGauge("ACCX",0.0f,-2.0f,2.0f);
+    gaugesView->addGauge("ACCY",0,-2.0f,2.0f);
+    gaugesView->addGauge("ACCZ",0,-2.0f,2.0f);
     gaugesView->addGauge("GYROX",0,-1000,1000);
     gaugesView->addGauge("GYROY",0,-1000,1000);
     gaugesView->addGauge("GYROZ",0,-1000,1000);
@@ -147,6 +148,7 @@ IHMControl::IHMControl(QWidget *parent) :
     connect(ui->actionSerial, SIGNAL(triggered()), this, SLOT(showSerialConfiguration()));
     connect(ui->actionJoystick, SIGNAL(triggered()), this, SLOT(showJoystickConfiguration()));
     connect(ui->actionSenCalib, SIGNAL(triggered()), this, SLOT(showSensorsCalibration()));
+    connect(ui->actionSensorVariance, SIGNAL(triggered()), this, SLOT(showSensosrVariance()));
 
     joystick->startPolling();
     protocol->openSerial();
@@ -245,6 +247,25 @@ void IHMControl::generateToolBar()
     connect(uav, SIGNAL(disarmed()), armedStatus, SLOT(turnOff()));
 
     ui->toolBar->addSeparator();
+
+    QLabel* flightModeLabel = new QLabel("FlightMode",this);
+    ui->toolBar->addWidget(flightModeLabel);
+    flightMode = new QComboBox;
+    flightMode->addItem( "Waiting" , QVariant(UAV::FLIGHTMODE_WAITING));
+    flightMode->addItem( "Normal" , QVariant(UAV::FLIGHTMODE_NORMAL) );
+    flightMode->addItem( "Covariance" , QVariant(UAV::FLIGHTMODE_VARIANCE) );
+    ui->toolBar->addWidget(flightMode);
+
+    connect(flightMode, SIGNAL(currentIndexChanged(int)), this, SLOT(flightModeChange(int)));
+
+    ui->toolBar->addSeparator();
+
+}
+
+void IHMControl::flightModeChange(int idx)
+{
+   QVariant var = flightMode->itemData(idx);
+   uav->changeFlightMode(var.toInt());
 }
 
 void IHMControl::addCentralWidget(QWidget* widget, const QString& title, QIcon icon)
@@ -288,6 +309,12 @@ void IHMControl::showSensorsCalibration()
 {
     SensorsCalibration* calibration = new SensorsCalibration();
     calibration->show();
+}
+
+void IHMControl::showSensosrVariance()
+{
+    SensorsVariance* variance = new SensorsVariance();
+    variance->show();
 }
 
 QString IHMControl::getWindowStateKey()

@@ -1,7 +1,12 @@
 #ifndef CUBE3D_H
 #define CUBE3D_H
 
+#if QT_VERSION >= 0x050000
+#include "Qt3D/QGLView"
+#else
 #include "qglview.h"
+#endif
+
 
 #include "UAV.h"
 

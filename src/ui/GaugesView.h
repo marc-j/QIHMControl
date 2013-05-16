@@ -1,7 +1,8 @@
 #ifndef GAUGESVIEW_H
 #define GAUGESVIEW_H
 
-#include <QtGui/QGraphicsView>
+//#include <QtGui/QGraphicsView>
+#include <QGraphicsView>
 #include <QColor>
 #include <QTimer>
 #include <QMap>

@@ -8,6 +8,7 @@
 #include <QStatusBar>
 #include <QPointer>
 #include <QPushButton>
+#include <QComboBox>
 
 #include "ui/SystemStatus.h"
 #include "ui/JoyStickStatus.h"
@@ -51,6 +52,7 @@ public slots:
     void showSerialConfiguration();
     void showJoystickConfiguration();
     void showSensorsCalibration();
+    void showSensosrVariance();
     void closeEvent(QCloseEvent* event);
     void showCentralWidget();
     void showCriticalMessage(const QString& title, const QString& message);
@@ -58,6 +60,9 @@ public slots:
     void showStatusMessage(const QString& status, int timeout);
     void showStatusMessage5s(const QString& status);
     void showStatusMessage(const QString& status);
+
+private slots:
+    void flightModeChange(int);
 
 protected:
     IHMControl(QWidget *parent = 0);
@@ -86,6 +91,8 @@ protected:
     Console* console;
     Plot* plot;
     HUD* hud;
+
+    QComboBox* flightMode;
 
     void loadSettings();
     void saveSettings();

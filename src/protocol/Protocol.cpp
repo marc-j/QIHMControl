@@ -88,7 +88,7 @@ void Protocol::onDataAvailable()
         const unsigned char data = datas.at(i);
         emit receiveByte(data);
 
-        //qDebug() << data;
+       // qDebug() << step << " : " << data;
 
         switch(step) {
             case STX1:
@@ -152,6 +152,25 @@ void Protocol::onMessageReceive(QByteArray* datas)
     }
 
     emit receiveMessage(msg);
+}
+
+void Protocol::sendMessage(uavlink_message_t message)
+{
+    uint8_t crc_s  =0;
+    QByteArray datas;
+    datas.append(255);
+    datas.append(255);
+    datas.append(message.cmd);
+    crc_s ^= message.cmd;
+    datas.append(message.len);
+    crc_s ^= message.len;
+    for (uint8_t i=0; i< message.len; i++) {
+        crc_s ^= message.datas[i];
+        datas.append(message.datas[i]);
+    }
+    datas.append(crc_s);
+
+    serial->write(datas);
 }
 
 PortSettings Protocol::getPortSettings()
