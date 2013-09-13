@@ -172,15 +172,15 @@ void UAV::changeFlightMode(uint8_t mode)
 void UAV::sendPID()
 {
     uavlink_message_pid_t pid;
-    pid.rollKP = (int) (rollPID.kP * 100.0f);
-    pid.rollKI = (int) (rollPID.kI * 100.0f);
-    pid.rollKD = (int) (rollPID.kD * 100.0f);
-    pid.pitchKP = (int) (pitchPID.kP * 100.0f);
-    pid.pitchKI = (int) (pitchPID.kI * 100.0f);
-    pid.pitchKD = (int) (pitchPID.kD * 100.0f);
-    pid.yawKP = (int) (yawPID.kP * 100.0f);
-    pid.yawKI = (int) (yawPID.kI * 100.0f);
-    pid.yawKD = (int) (yawPID.kD * 100.0f);
+    pid.rollKP = (int) (rollPID.kP * 1000.0f);
+    pid.rollKI = (int) (rollPID.kI * 1000.0f);
+    pid.rollKD = (int) (rollPID.kD * 1000.0f);
+    pid.pitchKP = (int) (pitchPID.kP * 1000.0f);
+    pid.pitchKI = (int) (pitchPID.kI * 1000.0f);
+    pid.pitchKD = (int) (pitchPID.kD * 1000.0f);
+    pid.yawKP = (int) (yawPID.kP * 1000.0f);
+    pid.yawKI = (int) (yawPID.kI * 1000.0f);
+    pid.yawKD = (int) (yawPID.kD * 1000.0f);
 
     uavlink_message_t msg = uavlink_message_pid_encode(&pid);
     emit sendMessage(msg);
@@ -198,6 +198,18 @@ void UAV::joystickChanged(QList<int> normAxis, QList<double> axis, QList<bool> b
         systemIsArmed = !systemIsArmed;
     }
     lastBtnStatus = buttons.at(BTN_ARMED);
+
+    if (buttons.at(10)) {
+        emit pidRollKP(1);
+    } else if (buttons.at(13)) {
+        emit pidRollKP(-1);
+    } else if (buttons.at(11)) {
+        emit pidRollKI(-1);
+    } else if (buttons.at(12)) {
+        emit pidRollKI(1);
+    }
+    // 10 - 13
+    // 11 - 12
 }
 
 void UAV::timerHandle()

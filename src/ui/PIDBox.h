@@ -25,6 +25,8 @@ signals:
 
 protected slots:
     void savePID();
+    void rollKp(int i);
+    void rollKi(int i);
 
 protected:
     UAV* uav;

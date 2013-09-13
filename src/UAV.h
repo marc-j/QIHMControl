@@ -166,6 +166,9 @@ signals:
     void sensorsVariance(float accX, float accY, float accZ, float gyroX, float gyroY, float gyroZ);
     void sendMessage(uavlink_message_t);
 
+    void pidRollKP(int i);
+    void pidRollKI(int i);
+
 public slots:
     void updateRollPID(float kP, float kI, float kD);
     void updatePitchPID(float kP, float kI, float kD);

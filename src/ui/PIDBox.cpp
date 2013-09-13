@@ -15,11 +15,30 @@ PIDBox::PIDBox(QWidget *parent) :
     connect(this, SIGNAL(rollPIDchanged(float,float,float)), uav, SLOT(updateRollPID(float,float,float)));
     connect(this, SIGNAL(pitchPIDchanged(float,float,float)), uav, SLOT(updatePitchPID(float,float,float)));
     connect(this, SIGNAL(yawPIDchanged(float,float,float)), uav, SLOT(updateYawPID(float,float,float)));
+
+    connect(uav, SIGNAL(pidRollKI(int)), this, SLOT(rollKi(int)));
+    connect(uav, SIGNAL(pidRollKP(int)), this, SLOT(rollKp(int)));
 }
 
 PIDBox::~PIDBox()
 {
     delete ui;
+}
+
+void PIDBox::rollKi(int i) {
+    ui->pitchKi->setValue((double)ui->pitchKi->value() + (i/1000.0f));
+    ui->rollKi->setValue((double)ui->rollKi->value() + (i/1000.0f));
+
+    emit pitchPIDchanged((float)ui->pitchKp->value(), (float)ui->pitchKi->value(), (float)ui->pitchKd->value());
+    emit pitchPIDchanged((float)ui->rollKp->value(), (float)ui->rollKi->value(), (float)ui->rollKd->value());
+}
+
+void PIDBox::rollKp(int i) {
+     ui->pitchKp->setValue((double)ui->pitchKp->value() + (i/100.0f));
+     ui->rollKp->setValue((double)ui->rollKp->value() + (i/100.0f));
+
+     emit pitchPIDchanged((float)ui->pitchKp->value(), (float)ui->pitchKi->value(), (float)ui->pitchKd->value());
+     emit pitchPIDchanged((float)ui->rollKp->value(), (float)ui->rollKi->value(), (float)ui->rollKd->value());
 }
 
 void PIDBox::readSettings()
