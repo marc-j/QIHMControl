@@ -1,12 +1,11 @@
 #include "UAVView.h"
-#include "qglabstractscene.h"
-#include "qglscenenode.h"
-#include "qglcamera.h"
-#include "qglcube.h"
-#include "qglpainter.h"
+#include <Qt3D/QGLAbstractScene>
+#include <Qt3D/QGLSceneNode>
+#include <Qt3D/QGLCamera>
+#include <Qt3D/QGLPainter>
 #include "QMatrix4x4"
-#include <qglbuilder.h>
-#include <qglsubsurface.h>
+#include <Qt3D/QGLBuilder>
+#include <Qt3D/QGLSubsurface>
 
 #include <QImage>
 #include <QPainter>
@@ -23,8 +22,8 @@ UAVView::UAVView(QWidget *parent) :
     yaw(0.0f)
 {
     setOption(QGLView::CameraNavigation,false);
-    setAutoFillBackground(false);
-    setMinimumSize(200, 200);
+    //setAutoFillBackground(false);
+    //setMinimumSize(200, 200);
 
     resize(this->width(), this->height());
 
@@ -73,19 +72,19 @@ void UAVView::paintGL(QGLPainter *painter)
 void UAVView::setPitch(double p)
 {
     pitch = p;
-    updateGL();
+    update();
 }
 
 void UAVView::setRoll(double r)
 {
     roll = r;
-    updateGL();
+    update();
 }
 
 void UAVView::setYaw(double y)
 {
     yaw = y;
-    updateGL();
+    update();
 }
 
 void UAVView::setAxis(double r, double p, double y)
@@ -94,7 +93,7 @@ void UAVView::setAxis(double r, double p, double y)
     roll    = r;
     yaw     = y;
 
-    updateGL();
+    update();
 }
 
 QSize UAVView::minimumSizeHint() const

@@ -31,15 +31,15 @@ void Plot::drawUI()
     QVBoxLayout* layout = new QVBoxLayout;
 
     plotX = new QCustomPlot(this);
-    plotX->setColor(Qt::darkGray);
+    //plotX->setColor(Qt::darkGray);
     layout->addWidget(plotX);
 
     plotY = new QCustomPlot(this);
-    plotY->setColor(Qt::darkGray);
+    //plotY->setColor(Qt::darkGray);
     layout->addWidget(plotY);
 
     plotZ = new QCustomPlot(this);
-    plotZ->setColor(Qt::darkGray);
+    //plotZ->setColor(Qt::darkGray);
     layout->addWidget(plotZ);
 
     this->setLayout(layout);
@@ -79,7 +79,7 @@ void Plot::drawPlot()
     plotX->xAxis->setTickStep(1);
 
     plotX->xAxis->setRange(0, 100, Qt::AlignLeft);
-    plotX->setupFullAxesBox();
+   // plotX->setupFullAxesBox();
 
     connect(plotX->xAxis, SIGNAL(rangeChanged(QCPRange)), plotX->xAxis2, SLOT(setRange(QCPRange)));
     connect(plotX->yAxis, SIGNAL(rangeChanged(QCPRange)), plotX->yAxis2, SLOT(setRange(QCPRange)));
@@ -114,7 +114,7 @@ void Plot::drawPlot()
     plotY->xAxis->setAutoTickStep(false);
     plotY->xAxis->setTickStep(1);
     plotY->xAxis->setRange(0, 100, Qt::AlignLeft);
-    plotY->setupFullAxesBox();
+    //plotY->setupFullAxesBox();
 
     connect(plotY->xAxis, SIGNAL(rangeChanged(QCPRange)), plotY->xAxis2, SLOT(setRange(QCPRange)));
     connect(plotY->yAxis, SIGNAL(rangeChanged(QCPRange)), plotY->yAxis2, SLOT(setRange(QCPRange)));
@@ -149,7 +149,7 @@ void Plot::drawPlot()
     plotZ->xAxis->setAutoTickStep(false);
     plotZ->xAxis->setTickStep(1);
     plotZ->xAxis->setRange(0, 50, Qt::AlignLeft);
-    plotZ->setupFullAxesBox();
+    //plotZ->setupFullAxesBox();
 
     connect(plotZ->xAxis, SIGNAL(rangeChanged(QCPRange)), plotZ->xAxis2, SLOT(setRange(QCPRange)));
     connect(plotZ->yAxis, SIGNAL(rangeChanged(QCPRange)), plotZ->yAxis2, SLOT(setRange(QCPRange)));

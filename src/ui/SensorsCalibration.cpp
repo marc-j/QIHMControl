@@ -235,7 +235,7 @@ void SensorsCalibration::generatePlot(QString file)
     gnuplot.write("unset key\n");
     gnuplot.write("set terminal png\n");
     gnuplot.write("set output 'datas/plots.png'\n");
-    gnuplot.write(QString("splot '" + file + "' using 4:5:6 with lines\n").toAscii());
+    gnuplot.write(QString("splot '" + file + "' using 4:5:6 with lines\n").toUtf8());
     gnuplot.write("q\n");
     gnuplot.closeWriteChannel();
     if (!gnuplot.waitForFinished())  return;

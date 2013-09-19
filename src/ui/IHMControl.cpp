@@ -1,7 +1,6 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QFile>
-#include <QWebView>
 #include <QApplication>
 #include <QtDebug>
 #include <QObjectList>
@@ -84,7 +83,7 @@ IHMControl::IHMControl(QWidget *parent) :
     addCentralWidget(plot,tr("Plots"), QIcon(":/files/images/analyser.png"));
 
     uavView = new UAVView(this);
-    addCentralWidget(uavView, tr("3D"), QIcon(":/files/images/plane.png"));
+   // addCentralWidget(uavView, tr("3D"), QIcon(":/files/images/plane.png"));
 
     joystickStatus = new JoyStickStatus(this);
     addDockWidget(Qt::LeftDockWidgetArea, joystickStatus);
@@ -97,8 +96,8 @@ IHMControl::IHMControl(QWidget *parent) :
 
 
     QDockWidget* cube3dDock = new QDockWidget(tr("Cube 3D"),this);
-    cube3d = new Cube3D(this);
-    cube3dDock->setWidget(cube3d);
+    //cube3d = new Cube3D(this);
+   //cube3dDock->setWidget(cube3d);
     cube3dDock->setObjectName("IHMCONTROL_CUBE3D_DOCK");
     addDockWidget(Qt::RightDockWidgetArea, cube3dDock);
 
@@ -289,7 +288,7 @@ void IHMControl::addCentralWidget(QWidget* widget, const QString& title, QIcon i
 void IHMControl::showCentralWidget()
 {
     QAction* action = qobject_cast<QAction *>(sender());
-    QWidget* widget = qVariantValue<QWidget *>(action->data());
+    QWidget* widget = action->data().value<QWidget*>();
     centerStack->setCurrentWidget(widget);
 }
 

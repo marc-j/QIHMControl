@@ -4,7 +4,8 @@
 #if QT_VERSION >= 0x050000
 #include "Qt3D/QGLView"
 #else
-#include "qglview.h"
+#include "Qt3D/QGLView"
+//#include "qglview.h"
 #endif
 
 
@@ -14,7 +15,7 @@ class Cube3D : public QGLView
 {
     Q_OBJECT
 public:
-    explicit Cube3D(QWidget *parent = 0);
+    explicit Cube3D(QWindow *parent = 0);
     ~Cube3D();
 
     QSize minimumSizeHint() const;

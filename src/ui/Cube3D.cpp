@@ -3,10 +3,10 @@
 #include <QDebug>
 #include <cmath>
 
-#include "qglbuilder.h"
-#include "qglcube.h"
+#include "Qt3D/QGLBuilder"
+#include "Qt3D/QGLCube"
 
-Cube3D::Cube3D(QWidget *parent) :
+Cube3D::Cube3D(QWindow *parent) :
     QGLView(parent),
     pitch(0.0f),
     roll(0.0f),
@@ -34,19 +34,19 @@ Cube3D::~Cube3D()
 void Cube3D::setPitch(double p)
 {
     pitch = p;
-    updateGL();
+    update();
 }
 
 void Cube3D::setRoll(double r)
 {
     roll = r;
-    updateGL();
+    update();
 }
 
 void Cube3D::setYaw(double y)
 {
     yaw = y;
-    updateGL();
+    update();
 }
 
 void Cube3D::setAxis(double r, double p, double y)
@@ -55,7 +55,7 @@ void Cube3D::setAxis(double r, double p, double y)
     roll    = r;
     yaw     = y;
 
-    updateGL();
+    update();
 }
 
 void Cube3D::paintGL(QGLPainter *painter)
